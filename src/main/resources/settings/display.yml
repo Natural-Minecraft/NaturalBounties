@@ -1,0 +1,189 @@
+# display.yml
+# Display bounties more on your server.
+
+skins:
+  # The url used to fetch the skin. You can obtain a url with: /bounty skin (player name/uuid)
+  missing-skin-url: 'https://textures.minecraft.net/texture/b6e0dfed46c33023110e295b177c623fd36b39e4137aeb7241777064af7a0b57'
+  # The texture ID here is used for Discord webhooks or Bedrock player heads if configured to use a texture ID.
+  # You can copy the end of the texture url, or use a UUID
+  missing-skin-id: '46ba63344f49dd1c4f5488e926bf3d9e2b29916a6c50d610bb40a5273dc8c82'
+
+# wanted posters of bounty
+bounty-posters:
+  # enable bounty posters
+  enabled: true
+  # players can give themselves bounty posters of any bounty, otherwise, only admins can give posters
+  give-own: false
+  # players can craft a poster with an empty map and a player head
+  craft-poster: true
+  # players can convert an empty map to a poster through the bounty poster command
+  write-poster: true
+  # players can wash posters by throwing them in a filled cauldron to get a regular map back
+  wash-poster: true
+  # display bounty reward on the poster
+  # note: changing this will change the position of the names and can cause text to overlap
+  #       if you want to change this, I suggest setting clean-posters to true
+  display-reward: true
+  # reward text below name if display-reward is enabled
+  # placeholders can be used here
+  reward-text: 'REWARD: {reward}'
+  # lock the bounty map - this will improve performance, but the maps will not update after they are created
+  # if you turn this on, I advise disabling display-reward to avoid confusing your players
+  lock-maps: false
+  # true adds the currency prefix and suffix to the reward text
+  # Some special characters like ◆ do not work on the poster
+  currency-wrap: false
+  # The line right below the player head
+  # placeholders can be used in here, but will only get updated every server restart if save-templates is false
+  # Long text here may make the names illegible
+  name-line: '{name}'
+  # how many milliseconds between map updates
+  update-interval: 2000
+  # always update the map even if the bounty hasn't changed
+  always-update: false
+  # save created maps to be used later - player heads will not change unless the player changes their name
+  save-templates: true
+  # mix available map colors for new colors on player faces
+  # this causes a pixelated effect when looking close, but it looks nicer from far away
+  # changing this section will require a restart of the server to apply
+  face-shading:
+    # how many shades of colors should be used - 0 for no shading
+    # If you want shading, I recommend just 1 blend.
+    blends: 0
+    # the maximum squared distance between shaded colors - 0 to shade all colors together (disabled)
+    # this can make the pixelated effect look less noticeable, but you lose out on some new colors.
+    # 3200 is my recommended starting distance
+    max-color-distance: 0
+  # delete all the saved poster templates in the NotBounties/posters folder
+  # set this to true if you change anything about what is displayed on the poster besides reward-text and currency-wrap
+  # this will be set to false again automatically after a clean has been done
+  clean-posters: false
+
+# auto-updating bounty poster board
+bounty-board:
+  # What the leaderboard is sorted by
+  # 0 oldest bounties
+  # 1 newest bounties
+  # 2 top bounties
+  # 3 lowest bounties
+  type: 2
+  # how many seconds between the board updates - minimum of 2 seconds (this can be server intensive)
+  update-interval: 5
+  # amount of bounty boards to update at a time - 0 to disable
+  staggered-update: 3
+  # glow item frame
+  glow: true
+  # invisible item frame
+  invisible: true
+  # name of the map, {player} and {amount} can be used - will be updated when the map does
+  item-name: '&6&lWANTED: &f{player}'
+  # when the name will be updated
+  # 0 = when the bounty rank changes
+  # 1 = when the bounty reward changes
+  # 2 = every update - I DO NOT recommend this unless in some rare conditions
+  update-name: 0
+
+# special compass allows you to track people with bounties
+bounty-tracker:
+  # whether the compasses will actually track a player
+  # does not stop admins from getting new compasses, and they will still be removed
+  enabled: true
+  # the minimum bounty required to obtain a tracker
+  minimum-bounty: 10
+  # allow players with the notbounties.tracker permission to give themselves a tracker with the command
+  give-own: false
+  # allow players with the notbounties.tracker permission to use the tracker command to change an empty tracker
+  write-empty-trackers: true
+  # allow all players to clean a tracker by throwing it in a filled cauldron (resets to empty tracker)
+  wash-trackers: true
+  # allow players with the notbounties.tracker permission to craft an empty tracker
+  craft-tracker: true
+  # clicking on a bounty poster with the tracker will change the tracked player
+  poster-tracking: true
+  # instead of removing trackers, the compasses will turn into empty trackers
+  reset-removed-trackers: true
+  # When to remove the compass after the bounty has been claimed
+  # the higher the number, the more performance heavy it will be on your server
+  # 0 - don't ever remove it
+  # 1 - remove it if they try to hold it
+  # 2 - check inventories every 5 minutes
+  # 3 - check inventory every time player opens a container
+  remove: 2
+  # how many blocks away until it the player starts glowing
+  # 0 to disable, -1 to set glowing from any distance
+  glow: 10
+  # how many blocks away until the tracked player gets a message about being tracked
+  # 0 to disable, -1 to send a message from any distance
+  alert: 500
+  # information to show when a player is holding a tracker
+  # with everything enabled it would look something like:
+  # Not_Jaden - 25m - 13x 63y 20z - world
+  action-bar:
+    enabled: true
+    # always show when holding - false only shows when they right-click
+    show-always: true
+    # show the name of the player who you are tracking
+    player-name: true
+    # show the distance in meters away from your target
+    distance: true
+    # show x y z of your target
+    position: false
+    # show the world of your target
+    world: false
+
+# add a tag above a player's head if they have a bounty
+# %notbounties_wanted% placeholder can be used in other plugins
+wanted-tag:
+  enabled: true
+  # how high above the player's eyes the tag is (in blocks)
+  offset: 0.4
+  # text above the player
+  text: '&f{level}&6&lWANTED&f: {amount}'
+  # minimum bounty to display tag
+  min-bounty: 100
+  # hide the tag when sneaking
+  hide-when-sneaking: true
+  # hide the tag when moving
+  hide-when-moving: false
+  # milliseconds between updating the text of the tag
+  text-update-interval: 2000
+  # milliseconds between updating the visibility of the tag
+  visibility-update-interval: 150
+  # whether you can see your own wanted tag above your head
+  # your own tag will look to lag behind you when you move
+  show-own: false
+  # text for certain levels of bounty
+  level:
+    # minimum bounty amount: text
+    1000: '&f☠ '
+    2500: '&c☠☠ '
+    5000: '&4☠☠☠ '
+
+# manhunt themed event that players can start
+bounty-hunt:
+  enabled: false
+  # The cost to start a hunt
+  cost-per-minute: 0.5
+  # The minimum time for a hunt.
+  minimum-minutes: 10
+  # Adds the money that the player spent to initiate the hunt to the bounty.
+  add-cost-to-bounty: true
+  # Give all players who join the hunt a bounty tracker for the hunted player.
+  give-trackers: true
+  # Remove trackers from players after the hunt is finished. This follows the remove rule in the bounty-trackers
+  # configration section but will not turn into an empty tracker
+  remove-old-trackers: true
+  # Whether bounties not a part of the hunt will be paused, meaning they can't be claimed during.
+  pause-other-bounties: false
+  # How many bounty hunts can be active at the same time. 0 to disable
+  max-concurrent-hunts: 5
+  # How many bounty hunts a player can participate in at the same time. 0 to disable
+  max-joinable-hunts: 1
+  # Bossbar timer for the hunt.
+  bossbar:
+    enabled: true
+    color: RED
+    text: '&4Hunt for &c&l{player}&4! &7Time remaining: &f{time}'
+  # Commands to be run when the bounty is claimed
+  # You can use the {participant} placeholder to run a command for everyone participating
+  commands: []

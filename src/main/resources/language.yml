@@ -1,0 +1,430 @@
+# a '#' after a line means only admins will see this message, if there is not a '#', then with all the other permissions, players can see this message
+prefix: '&7[&9Not&dBounties&7] &8» &r'
+# The prefix and suffix will show in front of every player name with a few exceptions - you can use placeholderapi here
+player-prefix: ''
+player-suffix: ''
+unknown-number: '&cUnknown number!'
+unknown-player: '&cCould not find the player &4{receiver}&c!'
+unknown-command: '&dUse &9/bounty help &dfor a list of commands.'
+unknown-material: '&cUnknown material: &7{material}'
+unknown-gui: '&cUnknown GUI: &7{gui}'
+invalid-range: '&cInvalid range. Valid range: &7{range}'
+bounty-success: '&aBounty placed on &e{receiver}&a for &e{amount}&a! Total Bounty: &e{bounty}'
+bounty-receiver: '&4{player} &cset a bounty on you for &4{amount}&c! Total Bounty: &4{bounty}'
+bounty-broadcast: '&e{player}&6 has placed a bounty of &f{amount}&6 on &e{receiver}&6! Total Bounty: &f{bounty}'
+extended-bounty-broadcast: # you can use up to 8 lines here
+  - ''
+  - '       &6&l&nWANTED!'
+  - ''
+  - '  &f{player}&7 has placed'
+  - '  &7a bounty of &a{amount}'
+  - '  &7on &4{receiver}&7!'
+  - '  &7Total Bounty: &a{bounty}'
+claim-bounty-broadcast: '&e{player}&6 has claimed the bounty of &f{amount}&6 on &e{receiver}&6!'
+enable-broadcast: '&eYour broadcast setting is now set to &a{notification}&e!'
+disable-broadcast: '&eYou have &cdisabled &ebounty broadcast!'
+no-permission: '&cYou do not have permission to execute this command!'
+broke: '&cYou do not have enough currency for this! &8Required: &7{amount}'
+no-bounty: '&4{receiver} &cdoes not have a bounty!'
+check-bounty: '&e{receiver}&a has a bounty of &e{amount}&a.'
+list-setter: '&e{player} &7> &a{amount} &7{items} &8{time}'
+list-total: '&e{player} &7> &a{amount}'
+offline-bounty: '&e{player}&6 has set a bounty of &e{amount}&6 on you while you were offline!'
+success-remove-bounty: '&aSuccessfully removed &2{receiver}''s &abounty.'  #
+success-edit-bounty: '&aSuccessfully edited &2{receiver}''s &abounty.' #
+no-setter: '&4{player} &chas not set a bounty on {receiver}' #
+repeat-command-bounty: '&6Please type this command in again in the next 30 seconds to confirm buying your bounty for &e{amount}&6.'
+repeat-command-immunity: '&6Please type this command in again in the next 30 seconds to confirm buying immunity for &e{amount}&6.'
+permanent-immunity: '&6{player} &eis immune to bounties!'
+scaling-immunity: '&6{player} &eis immune to bounties less than &e{amount}&6.'
+time-immunity: '&6{player} &eis immune to bounties for &e{time}&6.'
+buy-permanent-immunity: '&aYou have bought immunity from bounties.'
+buy-scaling-immunity: '&aYou have bought immunity from bounties under the amount of &2{amount}&a.'
+buy-time-immunity: '&aYou have bought immunity from bounties for &2{time}&a.'
+grace-period: '&cA bounty had just been claimed on &4{player}&c. Please wait &4{time}&c until you try again.'
+new-player-immunity: '&4{player}&c is new to the server. Please wait &4{time}&c until you try again.'
+min-bounty: '&cThe bounty must be at least &4{amount}&c.'
+max-bounty: '&cThe maximum bounty is &4{amount}&c.'
+already-bought-perm: '&cYou already have permanent immunity!'
+removed-immunity: '&aSuccessfully removed your immunity to bounties.'
+removed-other-immunity: '&aSuccessfully removed &2{receiver}''s &aimmunity to bounties.' #
+no-immunity: '&cYou do not have purchased immunity!'
+no-immunity-other: '&4{receiver} &cdoes not have purchased immunity!'
+immunity-expire: '&cYour bounty immunity has expired!'
+permission-immunity: '&cYou have immunity because of a permission &7{permission}&c. '
+expired-bounty: '&eYour bounty on &6{player}&e has expired.'
+refund: '&eYou have been refunded &f{amount}&e because {reason}'
+refund-reason-expire: 'your bounty on &f{player}&e has expired.'
+refund-reason-remove: 'your bounty on &f{player}&e has been removed.'
+refund-reason-bounty-cancel: 'your bounty on &f{player}&e was canceled.'
+refund-reason-gui-shutdown: 'the server shutdown while you were adding a bounty.'
+refund-reason-reward-head: '&f{player}''s&e bounty has been claimed.'
+# uses placeholders for the player with the bounty, but they are not updated after the item is given
+bounty-tracker-name: '&eBounty Tracker: &6&l{player}'
+bounty-tracker-lore:
+  - ''
+  - '&7Follow this compass'
+  - '&7to find {player}'
+  - ''
+empty-tracker-name: '&fEmpty Bounty Tracker'
+empty-tracker-lore:
+  - ''
+  - '&7Click a bounty poster'
+  - '&7or craft with a player'
+  - '&7head to track a bounty.'
+  - ''
+tracker-offline: "&7*offline*"
+tracker-no-permission: "&cNo Permission."
+tracker-give: '&eYou have given &6{receiver}&e a compass that tracks &6{player}&e.' #
+tracker-receive: '&eYou have been given a bounty tracker for &6{player}&e.'
+tracker-receive-empty: '&eYou have been given an empty bounty tracker. Click a bounty poster or craft with a player head to track a bounty.'
+tracked-notify: '&c&lYou are being tracked!'
+bounty-top: '&9&l{rank}. &d{player} &7> &a{amount}'
+bounty-top-title: '&7&m               &r &d&lBounties &9&lTop &7&m               '
+bounty-voucher-name: '&6{player}''s&e claimed bounty of &a{bounty}&e.'
+bounty-voucher-lore:
+  - ''
+  - '&2Awarded to {receiver}'
+  - '&7Right click to redeem'
+  - '&7this player''s bounty'
+  - ''
+redeem-voucher: '&aSuccessfully redeemed voucher for {amount}!'
+big-bounty: '&eYour bounty is very impressive!'
+whitelisted-players: '&fYour whitelisted players:&7' # player names will follow this
+whitelist-max: '&cYou''ve reached the maximum amount of whitelisted players.'
+whitelist-reset: '&fYour whitelisted players have been reset.'
+whitelist-change: '&eYour whitelisted players have been changed.'
+whitelist-toggle: '&fYour whitelist has been set to normal.'
+blacklist-toggle: '&fYour whitelist is now on blacklist mode.'
+whitelist-lore:
+  - '&f&lThis player is whitelisted.'
+  - ''
+blacklist-lore:
+  - '&f&lThis player is blacklisted.'
+  - ''
+whitelist-notify:
+  - '&fYou are whitelisted to this bounty!'
+  - ''
+not-whitelisted:
+  - '&cPart of this bounty is whitelisted.'
+  - ''
+death-tax: '&cYou were killed because of a bounty. You lost &4{items}&c.'
+max-setters: '&cThe maximum amount of setters for this player has been reached.'
+map-name: '&6&lWANTED: &f{player}'
+map-lore:
+  - ''
+  - '&6&oREWARD:'
+  - '&2{amount}'
+  - '&6&oAS OF'
+  - '&7{time}'
+  - ''
+map-give: '&eYou have given &6{receiver}&e a bounty poster of {player}.' #
+map-receive: '&eYou have been given a bounty poster of &6{player}&e.'
+require-empty-map: '&cYou are not holding an empty map.'
+admin-edit-lore: #
+  - '&cLeft Click &7to Remove'
+  - '&eRight Click &7to Edit'
+  - ''
+buy-back-lore:
+  - '&9Left Click &7to buy back for &a{amount}'
+  - ''
+murder: '&cYour bounty has been increased for murdering &4{player}&c!'
+any-kill-head-name: '&c&l{player}''s Head'
+any-kill-head-lore: []
+reward-head-name: '&c&l{player}''s Head'
+reward-head-lore:
+  - ''
+  - '&4This head had a {amount}'
+  - '&4bounty on it claimed by'
+  - '&c&o{killer}'
+  - ''
+update-stat: '&6{player}''s &f{leaderboard_name} &evalue has now been set to {amount}.'
+self-set-deny: '&4You can''t set a bounty on yourself.'
+entity-remove: '&a{amount} entities were removed.'
+prompt-cancel: '&eYou have canceled the prompt.'
+prompt-expire: '&cPrompt has expired.'
+combat-tag: '&eYou have been combat-tagged! Do not log out for &f{time}&e.'
+combat-safe: '&aYou are safe to log out.'
+wait-command: '&cPlease wait {time} before you use this command again.'
+give-tracker-lore:
+  - '&fLeft Click &7to get a tracker'
+give-poster-lore:
+  - '&fRight Click &7to get a poster'
+view-bounty-lore:
+  - '&fDrop &7to view more details.'
+remove-bounty-lore: #
+  - '&cLeft Click &7to Remove'
+edit-bounty-lore: #
+  - '&eRight Click &7to Edit'
+no-empty-tracker: '&cYou do not have an empty tracker in your hand.'
+stolen-bounty: '&aYou stole &2{player}''s&a bounty on you for {amount}&a!'
+stolen-bounty-broadcast: '&e{receiver}&6 has stolen &e{player}''s&6 bounty set on them for &f{amount}&6! New Bounty: &f{bounty}'
+challenge-completion: '&5You''ve completed a challenge. Use &d/bounty challenges &5to view.'
+challenge-gui-claim: '&5Click to claim your reward'
+challenge-claim-deny: '&cYou can''t claim this challenge!'
+trickle-bounty: '&2{amount}&e of &6{player}''s &ebounty has been transferred to yours.'
+natural-death: '&2{amount}&e of your bounty has been lost for dying.'
+bedrock-open-gui: '&eOpening Form...' # set to: '' if you don't want this message sent
+paused: '&cNotBounties is paused. To use this feature again, do &a/bounty unpause' #
+bounty-set-cooldown: '&cPlease wait {time} before you can set another bounty.'
+update-notification: "&eA new update is available. Current version: &6{current} &eLatest Version: &a{latest} \n&eDownload a new version here: &7https://www.spigotmc.org/resources/104484/"
+skip-update: '&f&o&nClick to skip this update.'
+disable-update-notification: '&7&o&nClick to disable this notification.'
+edit-bounty-clickable: '&6To edit {receiver}''s bounty, &e&lClick this message &6and enter the amount to change. &7(e.g. 10, -500, or 10k)'
+edit-setter-clickable: '&6To edit {player}''s amount on {receiver}''s bounty, &e&lClick this message &6and enter the amount to change. &7(e.g. 10, -500, or 10k)'
+# These next 2 deny messages will not have a prefix when sent
+deny-entry: '&c&lHey! &7Sorry, but you cannot enter here with a bounty.'
+deny-exit: '&c&lHey! &7Sorry, but you cannot exit here with a bounty.'
+blocked-bounty-command: '&cYou can''t use this command when you have a bounty! &7&o(/bounty)'
+hunt-broadcast: '&e{player}&6 has started a bounty hunt on &e{receiver}&6! Time to claim: &f{time}&6. Do &7/bounty hunt join {receiver}&6 to join.'
+hunt-end: '&6The hunt on &e{receiver}&6 has ended!'
+no-hunt-found: '&cCould not find a bounty hunt for &4{player}&c!'
+max-hunts-joined: '&cYou have already joined the maximum number of bounty hunts!'
+max-hunts-active: '&cThe maximum number of active hunts has been reached.'
+minimum-duration: '&cThe minimum duration for the hunt is {time} minutes.'
+own-hunt: '&cYou cannot join your own hunt!'
+extend-hunt: '&aYou have extended the hunt time on &f{player}&a!'
+hunt-join: '&aYou have joined the bounty hunt for &f{player}&a!'
+hunt-leave: '&eYou have left the bounty hunt for &f{player}&e!'
+not-in-hunt: '&cYou are not participating in this hunt.'
+list-hunts: '&eActive bounty hunts:'
+list-hunt-players: '&ePlayers participating in the hunt for &f{player}&e:'
+excluded-bounty-item: '&cYou cannot set a bounty with &f{material}&c.'
+permission-immunity-bounty: '&cYou are immune to all bounties due to a permission.'
+permission-immunity-random: '&cYou are immune to random bounties due to a permission.'
+permission-immunity-murder: '&cYou are immune to murder bounties due to a permission.'
+permission-immunity-timed: '&cYou are immune to timed bounties due to a permission.'
+sort-change: '&eYour sort type for &f{gui} &ehas been changed to &f{sort_type}&e.'
+# These are the text that replaces the {sort_type}/{sort_type_(gui)} placeholder in this file and for the %notbounties_sort_(gui)% placeholder
+sort-type:
+  bounty:
+    0: 'Newest'
+    1: 'Oldest'
+    2: 'Highest'
+    3: 'Lowest'
+  player:
+    -1: 'Default' # When an invalid sort type is used
+    1: 'Highest'
+    2: 'Lowest'
+    3: 'Alphabetically'
+    4: 'Reverse Alphabetically'
+# These are some stat messages.
+# Long is sent when players are viewing their own stats with a command
+# Short is sent when using a placeholder that ends in _full. This is useful in player-item lore
+bounty-stat:
+  all:
+    name: "All-Time"
+    long: '&eYour all-time bounty is &2{amount}&e.'
+    short: '&6All-time bounty: &e{amount}'
+  kills:
+    name: 'Bounty Kills'
+    long: '&eYou have killed &6{amount}&e players with bounties.'
+    short: '&6Bounty kills: &e{amount}'
+  claimed:
+    name: 'Claimed Rewards'
+    long: '&eYou have claimed &2{amount}&e from bounties.'
+    short: '&6Bounty rewards: &e{amount}'
+  deaths:
+    name: 'Bounty Deaths'
+    long: '&eYou have died &6{amount}&e times with a bounty.'
+    short: '&6Bounty deaths: &e{amount}'
+  set:
+    name: 'Bounties Set'
+    long: '&eYou have set &6{amount}&e successful bounties.'
+    short: '&6Bounties set: &e{amount}'
+  immunity:
+    name: 'Immunity'
+    long: '&eYou have spent &2{amount}&e on immunity.'
+    short: '&6Bounty immunity: &e{amount}'
+  current:
+    name: 'Current'
+help:
+  title: '&7&m                     &9&l Not&d&lBounties &7&m                     '
+  footer: '&7&m          {prev}&7&m             &7[{page}]&7&m             {next}&7&m          '
+  next-page: '&7Next Page' # hover text of {next}
+  next-text: '&a&l⋙⋙⋙' # replaces {next} if there is a next page
+  next-deny: '&7&m     ' # replaces {next} if there isn't a next page
+  previous-page: '&7Previous Page' # hover text of {prev}
+  prev-text: '&a&l⋘⋘⋘' # replaces {prev} if there is a previous page
+  prev-deny: '&7&m     ' # replaces {prev} if there isn't a previous page
+  basic:
+    - '&1Bounty tax is currently: &5{tax}%'
+    - '&1Whitelist cost is currently: {whitelist_cost} per player.'
+    - '&9/bounty help &8- &dShows this message.'
+    - '&9/bounty tutorial &8- &dShows a text tutorial.'
+    - '&9/bounty bdc &8- &dToggles the bounty broadcast message.'
+  view:
+    - '&9/bounty check (player) <list> &8- &dChecks a bounty.'
+    - '&9/bounty list &8- &dLists all bounties.'
+    - '&9/bounty &8- &dOpens bounty GUI.'
+  stats:
+    - '&9/bounty top (all/kills/claimed/deaths/set/immunity) <list> &8- &dLists the top 10 players with the respective stats.'
+    - '&9/bounty stat (all/kills/claimed/deaths/set/immunity) &8- &dView your bounty stats.'
+    - '&9/bounty stat (all/kills/claimed/deaths/set/immunity) (player) &8- &dView another player''s stats.'
+  set:
+    - '&9/bounty (player) (amount) <whitelisted players> &8- &dAdds a bounty to a player.'
+    - '&9/bounty (player) (material):(amount),(material):(amount),... <whitelisted players> &8- &dAdds a bounty of items on a player.'
+    - '&9/bounty set <offline> &8- &dOpens the set bounty GUI.'
+  whitelist:
+    - '&9/bounty whitelist (add/remove/set) (whitelisted players) &8- &dChange the players that can claim the bounties you set.'
+    - '&9/bounty whitelist <offline> &8- &dOpens the set whitelist GUI.'
+    - '&9/bounty whitelist reset &8- &dResets your whitelisted players.'
+    - '&9/bounty whitelist view &8- &dDisplays your whitelisted players in chat.'
+  blacklist:
+    - '&9/bounty whitelist toggle &8- &dToggles your whitelist into a blacklist or vice versa.'
+  buy-own:
+    - '&9/bounty buy &8- &dBuys your own bounty for {buy_back_interest}x the price.'
+  buy-immunity:
+    permanent:
+      - '&9/bounty immunity &8- &dBuy immunity to bounties set on you for {permanent_cost} currency.'
+    scaling:
+      - '&9/bounty immunity (price) &8- &dBuy immunity to bounties set on you for {scaling_ratio}x the price you spend.'
+    time:
+      - '&9/bounty immunity (price) &8- &dBuy immunity to bounties for price * {time_immunity}.'
+  remove-immunity:
+    - '&9/bounty immunity remove &8- &dRemoves purchased immunity from yourself.'
+  remove-set:
+    - '&9/bounty remove (player) &8- &dRemoved your set bounties on the player.'
+  poster-own:
+    - '&9/bounty poster (player) &8- &dGives you a poster of a player''s bounty.'
+  poster-other:
+    - '&9/bounty poster (player) (receiver) &8- &dGives receiver a poster of a player''s bounty.'
+  tracker-own:
+    - '&9/bounty tracker (player) &8- &dGives you a compass that tracks a player with a bounty.'
+  tracker-other:
+    - '&9/bounty tracker (player) (receiver) &8- &dGives receiver a compass that tracks a player with a bounty.'
+  challenges:
+    - '&9/bounty challenges &8- &dOpens the challenges GUI.'
+    - '&9/bounty challenges claim <challenge #> &8- &dClaim a challenge reward.'
+    - '&9/bounty challenges check <challenge #> &8- &dDisplays challenge info in chat.'
+  hunt-start:
+    - '&9/bounty hunt &8- &dOpens the bounty hunt GUI.'
+    - '&9/bounty hunt (player) (time) &8- &dStarts a bounty hunt on a player.'
+  hunt-participate:
+    - '&9/bounty hunt join (player) &8- &dJoin a bounty hunt for a player.'
+    - '&9/bounty hunt leave (player) &8- &dLeave a bounty hunt for a player.'
+    - '&9/bounty hunt list &8- &dList all active hunts.'
+  admin: #
+    - '&9/bounty immunity remove (player) &8- &dRemoves purchased immunity from a player.'
+    - '&9/bounty remove (player) &8- &dRemoves all bounties from a player.'
+    - '&9/bounty remove (player) from (setter) &8- &dRemoves a specific bounty put on a player.'
+    - '&9/bounty edit (player) (amount) &8- &dEdits a player''s total bounty.'
+    - '&9/bounty edit (player) from (setter) (amount) &8- &dEdits a specific bounty put on a player.'
+    - '&9/bounty stat (all/kills/claimed/deaths/set/immunity) (player) edit (change) &8- &dEdits a player''s stat value.'
+    - '&9/bounty stat (all/kills/claimed/deaths/set/immunity) (player) setValue (new value) &8- &dSets a player''s stat value.'
+    - '&9/bounty board <rank> &8- &dCreates a board for current bounties.'
+    - '&9/bounty board clear &8- &dRemoves every bounty board.'
+    - '&9/bounty board remove &8- &dRemoves a specific bounty board.'
+    - '&9/bounty cleanEntities <radius> &8- &dRemoves persistent bounty entities.'
+    - '&9/bounty reload &8- &dReloads the plugin.'
+    - '&9/bounty debug &8- &dShows plugin information and additional help.'
+    - '&9/bounty pause/unpause &8- &dPauses all bounty features except viewing.'
+    - '&9/bountyadmin (player) <bounty command> &7- &dRuns a bounty command for a player.'
+  immune:
+    - '&dNote: You are immune to having bounties placed on you.'
+tutorial:
+  run-command-hover: '&eRun Command'
+  suggest-command-hover: '&ePrompt Command'
+  broadcast:
+    - '                 &e&lBounty Broadcast'
+    - 'Getting messages for all the bounties set and claimed'
+    - 'can be annoying. You can disable messages for bounties'
+    - 'not concerning you with &6{run_command=/bounty bdc}&f.' # the placeholder used here will run the following command when the player clicks (java only)
+  bounty-information:
+    - '                &e&lBounty Information'
+    - 'To view bounties, open the bounty GUI with &6{run_command=/bounty}&f. To'
+    - 'view bounties in chat, do &6{run_command=/bounty list}&f. To get more'
+    - 'information on a bounty, you can run the command'
+    - '&6{suggest_command=/bounty check (player)}&f. This command will show you'
+    - 'everyone who has set a bounty on that specific player.'
+  bounty-statistics:
+    - '                  &e&lBounty Statistics'
+    - 'A variety of statistics are recorded to be apart of the'
+    - 'bounty leaderboards. Recorded values are:'
+    - '- Total bounty accumulated. (All)'
+    - '- Bounty kills. (Kills)'
+    - '- Claimed money from bounties. (Claimed)'
+    - '- Deaths with a bounty. (Deaths)'
+    - '- Current immunity. (Immunity)'
+    - 'You can view any of your values with &6{suggest_command=/bounty stat (keyword)}&f.'
+    - 'The keywords are in the parenthesis. To open the leaderboard'
+    - 'GUI, do {suggest_command=/bounty top (keyword)}&f. You can view the leaderboard'
+    - 'in chat by adding "list" to the end of the command.'
+  bounty-whitelist:
+    - '                   &e&lBounty Whitelist'
+    - 'You can pick up to 10 players to be whitelisted to a bounty'
+    - 'you set. Each additional player on your whitelist makes'
+    - 'bounties cost {whitelist_cost}&f more. You can open the whitelist GUI'
+    - 'with &6{run_command=/bounty whitelist}&f. To edit your whitelist, do'
+    - '&6{run_command=/bounty whitelist (add/remove/set) (whitelisted players)}&f.'
+    - 'You can specify multiple players separated by spaces if'
+    - 'necessary. To view your whitelisted players in chat, do'
+    - '&6{run_command=/bounty whitelist view}&f. You can clear your whitelist by'
+    - 'doing &6{run_command=/bounty whitelist reset}&f.'
+  variable-whitelist: # players will only see this if variable-whitelist is enabled in the config
+    - '                  &e&lVariable Whitelist'
+    - 'Don''t worry if you forget a few players. You can change'
+    - 'your whitelist, and all bounties set by you will have'
+    - 'their whitelists changed.'
+  fixed-whitelist: # vice versa for this
+    - '                    &e&lFixed Whitelist'
+    - 'You have to set your whitelist before you set a bounty.'
+    - 'Changing your whitelist after the bounty has been set'
+    - 'will not change it for previous bounties.'
+  bounty-set:
+    - '                   &e&lSetting a Bounty'
+    - 'Setting a bounty is fairly simple. You only need 2 parts:'
+    - 'the name of your target, and the price. You can set a'
+    - 'bounty through the GUI with &6{run_command=/bounty set}&f or &6{suggest_command=/bounty (player)}&f.'
+    - 'Bounties also have a tax of {tax}%. You can preview the'
+    - 'cost in the GUI. To set a bounty with only a command,'
+    - 'use &6{suggest_command=/bounty (player) (amount)}&f. To skip the confirmation '
+    - 'GUI, add &7--confirm&f to the end.'
+  bounty-buy:
+    - '                &e&lBuying Your Bounty'
+    - 'Don''t like a bounty set on you? You can buy back your'
+    - 'own bounties for {buy_back_interest}% of the bounty cost. To make'
+    - 'the purchase, left click your bounty in the GUI or do'
+    - '&6{run_command=/bounty buy}&f.'
+  immunity-general:
+    - '                        &e&lImmunity'
+    - 'To avoid having to pay the hefty interest rate when'
+    - 'buying your own bounty, you can buy immunity to bounties.'
+  permanent-immunity:
+    - '                 &e&lPermanent Immunity'
+    - 'Immunity is permanent and costs {permanent_cost}. To purchase,'
+    - 'use &6{run_command=/bounty immunity}&f.'
+  scaling-immunity:
+    - '                   &e&lScaling Immunity'
+    - 'Immunity will protect you for bounties under {scaling_ratio}x the price'
+    - 'you spend. To purchase, use &6{suggest_command=/bounty immunity (price)}&f.'
+  time-immunity:
+    - '                    &e&lTime Immunity'
+    - 'Immunity will protect you for the price you spend multiplied'
+    - 'by {time_immunity} seconds. To purchase, use &6{suggest_command=/bounty immunity (price)}&f.'
+  remove-immunity:
+    - '                   &e&lRemove Immunity'
+    - 'If your immunity is bothersome, you can remove it with'
+    - '&6{run_command=/bounty immunity remove}. You will not get a refund.'
+  bounty-trackers:
+    - '                   &e&lBounty Trackers'
+    - 'Sometimes finding players can be difficult, but with'
+    - 'the bounty tracker, you need not worry! You will unlock'
+    - 'the recipe for an empty tracker in your recipe book'
+    - 'after setting a bounty. An empty tracker can be combined'
+    - 'with a player head to track a specific bounty. To reuse'
+    - 'the tracker, throw it in a filled cauldron to obtain the'
+    - 'empty tracker again.'
+  wanted-posters:
+    - '                   &e&lWanted Posters'
+    - 'Wanted posters are helpful for letting people know of a'
+    - 'bounty you''ve set. You can craft one with an empty map'
+    - 'and the head of the player with the bounty. Right click'
+    - 'a poster in an item frame with an empty tracker to track'
+    - 'that player. Throw the poster in a filled cauldron to'
+    - 'clean it.'
+  commands:
+    - '                        &e&lCommands'
+    - 'To view the commands you have access to, use &6{run_command=/bounty help}&f.'
+
+

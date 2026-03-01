@@ -1,0 +1,137 @@
+# auto-bounties.yml
+# Set bounties from the server, or run server commands when a bounty has been set/claimed.
+
+# The name of bounties set by console.
+console-bounty-name: Sheriff
+# The number of days until auto bounties expire.
+# Overrides the bounty-expire value in config.yml unless expire-time is set to -1.
+# -2 will disable expiration no matter the value of bounty-expire
+expire-time: -1
+# Players with immunity will be able to have bounties set on them by auto bounties.
+# This does not override the permission-specific immunities like notbounties.immunity.murder
+override-immunity: true
+
+# Players are checked every once in a while if they are banned.
+# This can cause lag if there are a lot of bounties.
+ban-checking:
+  enabled: true
+  # How long in seconds until every player is guaranteed to be checked for a ban. 43,200 seconds = 12 hours.
+  simple-check-interval: 43200
+  # ADVANCED OPTIONS - Set simple-check-interval to 0 to enable these.
+  # The default config of 72001, 0.083, 500, checks bans every hour and guarantees everyone will be checked after 12 hours (1/0.083)
+  # except if there are more than 500 * 12 = 6000 bounties
+  # How often (in ticks) bans will be checked.
+  interval: 72001
+  # The ratio of players checked every interval.
+  check-portion: 0.083
+  # The maximum number of players that can be checked at once.
+  max-players-per-check: 500
+
+# Add a bounty if a player kills another player.
+# Immune permission: notbounties.immunity.murder
+murder-bounty:
+  # How many seconds before you can kill the same person and increase your bounty
+  player-cooldown: 360
+  # How much the bounty increases per player kill. Consider raising minimum-broadcast if you change this if you don't want a message in chat.
+  # Set to 0 to disable.
+  bounty-increase: 0
+  # Whether the bounty-increase represents the percentage of the current bounty added, or a flat number.
+  # If the multiplicative is set to true, and the current bounty is 0, the bounty will be set to the min-bounty.
+  multiplicative: false
+  # you will be excluded from the bounty increase if you are claiming another bounty
+  exclude-claiming: true
+  # Cancel a trickle bounty if the murder bounty is greater, or cancel a murder bounty if the trickle bounty is greater.
+  # exclude-claiming must be set to false for this to work.
+  exclusive-murder-or-trickle: false
+  # Commands to be run when a bounty is added for murder.
+  commands: []
+
+# Set a random bounty every once in a while.
+# Immune permission: notbounties.immunity.random
+random-bounties:
+  # Include offline players in the random bounties
+  offline-set: false
+  # Minimum seconds between the next random bounty. 0 to disable.
+  min-time: 0 # 86400 seconds in a day
+  # Maximum seconds between next random bounty.
+  max-time: 0
+  # Minimum bounty price.
+  min-price: 10
+  # Maximum bounty price.
+  max-price: 100
+
+# Add bounties after a set amount of time.
+# Immune permission: notbounties.immunity.timed
+timed-bounties:
+  # The time in seconds before the next bounty is set. 0 to disable.
+  time: 0
+  # How much the bounty will increase.
+  bounty-increase: 10
+  # Bounty amount that the player needs for timed-bounties to stop setting bounties. 0 to disable.
+  max-bounty: 0
+  # Reset the timer when the player dies.
+  reset-on-death: true
+  # Time will be tracked when the player is offline, and bounties will be set while they are offline.
+  offline-tracking: false
+
+# Claiming another bounty will increase your own by a percentage.
+# Items will not be trickled.
+trickle-bounties:
+  # The ratio of the bounty that is physically rewarded to the person who claimed the bounty (they get the currency).
+  # 1 = all, 0.5 = half, 0 = none
+  given-reward: 1
+  # The ratio of the bounty that is transferred to the person who claimed the bounty.
+  bounty-transfer: 0
+  # Trickle bounties for players that claim a bounty without having one
+  unbountied-claim:
+    given-reward: 1
+    bounty-transfer: 0
+  # The percentage of the player's bounty that is lost when a player has a natural death (not from another player).
+  # 0 = 0%, 0.25 = 25%, 1 = 100%
+  natural-death-bounty-loss: 0
+
+# Give players with big bounties perks.
+big-bounties:
+  # How big their bounty must be for the effects to take place.
+  # Set to -1 to disable.
+  # Bounty must be greater than the threshold (exclusive).
+  bounty-threshold: 25000
+  # When to use the threshold to trigger
+  # ONCE - Trigger the commands once after the bounty has reached the threshold
+  # AMOUNT - Trigger the commands if the set amount is greater than the threshold
+  # SET - Trigger the commands every time a bounty is set on a player with the total bounty above the threshold
+  trigger: ONCE
+  # Whether a soul fire flame will be above the player's head.
+  particle: true
+  # Commands to be executed when the player reaches a bounty over the threshold.
+  # Same format as bounty-claim-commands without a killer.
+  commands:
+    - 'minecraft:effect give {player} minecraft:glowing 10 0'
+
+# Commands to be executed when a bounty is claimed.
+# See https://github.com/No-Not-Jaden/NotBounties/wiki/Action-Commands for a description of the special actions you can use here.
+bounty-claim-commands: []
+# Commands to be executed when a bounty is set
+bounty-set-commands: []
+# Commands to be executed when a bounty is removed. The killer options for action commands will not work for this.
+bounty-remove-commands: []
+# Commands to be executed when a player with a bounty joins the server
+bounty-join-commands: []
+# Commands to be executed when a player with a bounty quits the server
+bounty-quit-commands: []
+# Blocks commands for bountied players if they start with the following text.
+blocked-bounty-commands:
+  - 'teamPlugin leave'
+  - 'teamPlugin join'
+
+# Prompt feature for action commands
+prompts:
+  # How many attempts the player gets before the prompt is canceled
+  attempts: 5
+  # Typing these words in chat will exit the prompt
+  cancel-words:
+    - 'cancel'
+    - 'exit'
+  # The time the player has to type in an answer to the prompt before it times out
+  # in seconds
+  time-limit: 30
