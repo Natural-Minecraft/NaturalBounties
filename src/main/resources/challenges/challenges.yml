@@ -533,7 +533,7 @@ challenge-types:
         image: 'textures/items/netherite_sword.png'
         image-url: false
       # player must increase this stat by {x}
-      requirement: '%notbounties_set% >= {x}'
+      requirement: '%NaturalBounties_set% >= {x}'
       # display of challenge before it has been completed
       in-progress:
         - '&e&lSet {x} Bounties'

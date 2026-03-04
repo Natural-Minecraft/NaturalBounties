@@ -8,7 +8,7 @@ console-bounty-name: Sheriff
 # -2 will disable expiration no matter the value of bounty-expire
 expire-time: -1
 # Players with immunity will be able to have bounties set on them by auto bounties.
-# This does not override the permission-specific immunities like notbounties.immunity.murder
+# This does not override the permission-specific immunities like NaturalBounties.immunity.murder
 override-immunity: true
 
 # Players are checked every once in a while if they are banned.
@@ -28,7 +28,7 @@ ban-checking:
   max-players-per-check: 500
 
 # Add a bounty if a player kills another player.
-# Immune permission: notbounties.immunity.murder
+# Immune permission: NaturalBounties.immunity.murder
 murder-bounty:
   # How many seconds before you can kill the same person and increase your bounty
   player-cooldown: 360
@@ -47,7 +47,7 @@ murder-bounty:
   commands: []
 
 # Set a random bounty every once in a while.
-# Immune permission: notbounties.immunity.random
+# Immune permission: NaturalBounties.immunity.random
 random-bounties:
   # Include offline players in the random bounties
   offline-set: false
@@ -61,7 +61,7 @@ random-bounties:
   max-price: 100
 
 # Add bounties after a set amount of time.
-# Immune permission: notbounties.immunity.timed
+# Immune permission: NaturalBounties.immunity.timed
 timed-bounties:
   # The time in seconds before the next bounty is set. 0 to disable.
   time: 0
@@ -109,7 +109,7 @@ big-bounties:
     - 'minecraft:effect give {player} minecraft:glowing 10 0'
 
 # Commands to be executed when a bounty is claimed.
-# See https://github.com/No-Not-Jaden/NotBounties/wiki/Action-Commands for a description of the special actions you can use here.
+# See https://github.com/No-Not-Jaden/NaturalBounties/wiki/Action-Commands for a description of the special actions you can use here.
 bounty-claim-commands: []
 # Commands to be executed when a bounty is set
 bounty-set-commands: []

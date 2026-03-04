@@ -1,0 +1,664 @@
+package me.naturalsmp.NaturalBounties;
+
+import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
+import com.cjcrafter.foliascheduler.FoliaCompatibility;
+import com.cjcrafter.foliascheduler.ServerImplementation;
+import me.naturalsmp.NaturalBounties.data.*;
+import me.naturalsmp.NaturalBounties.features.settings.auto_bounties.*;
+import me.naturalsmp.NaturalBounties.features.settings.databases.AsyncDatabaseWrapper;
+import me.naturalsmp.NaturalBounties.features.settings.databases.proxy.ProxyDatabase;
+import me.naturalsmp.NaturalBounties.features.settings.databases.proxy.ProxyMessaging;
+import me.naturalsmp.NaturalBounties.features.settings.display.BountyHunt;
+import me.naturalsmp.NaturalBounties.features.settings.display.BountyTracker;
+import me.naturalsmp.NaturalBounties.features.settings.display.WantedTags;
+import me.naturalsmp.NaturalBounties.features.settings.immunity.ImmunityManager;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.BountyClaimRequirements;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.Integrations;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.LuckPermsClass;
+import me.naturalsmp.NaturalBounties.features.settings.money.NumberFormatting;
+import me.naturalsmp.NaturalBounties.ui.Commands;
+import me.naturalsmp.NaturalBounties.ui.Events;
+import me.naturalsmp.NaturalBounties.ui.SkinManager;
+import me.naturalsmp.NaturalBounties.ui.gui.GUI;
+import me.naturalsmp.NaturalBounties.features.settings.display.map.BountyBoard;
+import me.naturalsmp.NaturalBounties.features.settings.display.map.BountyMap;
+import me.naturalsmp.NaturalBounties.utils.*;
+import me.naturalsmp.NaturalBounties.features.challenges.ChallengeListener;
+import me.naturalsmp.NaturalBounties.features.challenges.ChallengeManager;
+import me.naturalsmp.NaturalBounties.features.*;
+import me.naturalsmp.NaturalBounties.features.webhook.WebhookOptions;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.external_api.*;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.external_api.bedrock.FloodGateClass;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.external_api.bedrock.GeyserMCClass;
+import me.naturalsmp.NaturalBounties.features.settings.integrations.external_api.worldguard.WorldGuardClass;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.*;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeoutException;
+
+
+import static me.naturalsmp.NaturalBounties.features.LanguageOptions.*;
+
+/**
+ * Go through wiki for outdated materials
+ * Update front page
+ * Separate messages sent to the proxy if they are too big. (Velocity version too)
+ * Team bounties
+ * Bungee support.
+ * Better SQL and Redis config with connection string and address options to replace others.
+ * Redo vouchers with persistent data, give items, & reward delay
+ * Redis Pub Sub messages for player data storage. - proxy messaging too
+ * database message table with server IDs
+ * fast database option to use directly instead of an update interval
+ * Multiple proxy databases
+ * 1.21.6 dialog
+ * Option to send api request when setting a bounty on offline player
+ * bounty hunt option to split the bounty between participants
+ */
+public final class NaturalBounties extends JavaPlugin {
+
+    private static NaturalBounties instance;
+    private static String latestVersion;
+    private static boolean updateAvailable = false;
+
+    public static final String SESSION_KEY = UUID.randomUUID().toString();
+    private static NamespacedKey namespacedKey;
+    private static int serverVersion = 20;
+    private static int serverSubVersion = 0;
+    private static boolean debug = false;
+    private static boolean paused = false;
+    private static Events events;
+    private boolean started = false;
+    private static ServerImplementation serverImplementation;
+
+    public static NamespacedKey getNamespacedKey() {
+        return namespacedKey;
+    }
+
+    public static void setNamespacedKey(NamespacedKey namespacedKey) {
+        NaturalBounties.namespacedKey = namespacedKey;
+    }
+
+    private static void setInstance(NaturalBounties instance) {
+        NaturalBounties.instance = instance;
+    }
+
+    public static void setEvents(Events events) {
+        NaturalBounties.events = events;
+    }
+
+    @Override
+    public void onLoad() {
+        setInstance(this);
+        Integrations.onLoad(this);
+    }
+
+
+    @Override
+    public void onEnable() {
+        if (new File(getDataFolder(), "debug.bin").exists()) {
+            debug = true;
+            getLogger().info("Debug mode enabled by debug.bin file.");
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("Skript")) {
+            SkriptAddon addon = Skript.registerAddon(this);
+            try {
+                addon.loadClasses("me.naturalsmp.NaturalBounties", "skripts");
+                Bukkit.getLogger().info("[NaturalBounties] Connected to Skript");
+            } catch (IOException e) {
+                Bukkit.getLogger().warning(e.toString());
+            }
+        }
+        setServerImplementation(new FoliaCompatibility(this).getServerImplementation());
+        Random random = new Random(System.currentTimeMillis());
+        // Plugin startup logic
+        if (random.nextInt(10) == 3) {
+            // 10% chance to receive this Easter egg
+            String display = """
+                                      \s
+                    ████████████████████████████████████████████████████████████████████
+                    █▄─▀█▄─▄█─▄▄─█─▄─▄─█▄─▄─▀█─▄▄─█▄─██─▄█▄─▀█▄─▄█─▄─▄─█▄─▄█▄─▄▄─█─▄▄▄▄█
+                    ██─█▄▀─██─██─███─████─▄─▀█─██─██─██─███─█▄▀─████─████─███─▄█▀█▄▄▄▄─█
+                    ▀▄▄▄▀▀▄▄▀▄▄▄▄▀▀▄▄▄▀▀▄▄▄▄▀▀▄▄▄▄▀▀▄▄▄▄▀▀▄▄▄▀▀▄▄▀▀▄▄▄▀▀▄▄▄▀▄▄▄▄▄▀▄▄▄▄▄▀""";
+            getLogger().info(display);
+        }
+
+        // load commands and events
+        Commands commands = new Commands();
+        Objects.requireNonNull(this.getCommand("NaturalBounties")).setExecutor(commands);
+        Objects.requireNonNull(this.getCommand("NaturalBountiesadmin")).setExecutor(commands);
+        setEvents(new Events());
+        Bukkit.getServer().getPluginManager().registerEvents(events, this);
+        Bukkit.getServer().getPluginManager().registerEvents(new GUI(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new CurrencySetup(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new BountyMap(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PVPRestrictions(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new WebhookOptions(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new Prompt(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new BountyTracker(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new ChallengeListener(), this);
+
+        BountyMap.initialize(this);
+        setNamespacedKey(new NamespacedKey(this, "bounty-entity"));
+
+        readVersion(this);
+
+        Bukkit.getServer().getPluginManager().registerEvents(new RemovePersistentEntitiesEvent(), this);
+
+        try {
+            DataManager.loadData(this);
+            loadConfig();
+            if (ChallengeManager.isEnabled()) {
+                ChallengeManager.readChallengeData();
+            }
+
+            ImmunityManager.loadPlayerData();
+        } catch (IOException e) {
+            getLogger().severe("[NaturalBounties] Failed to read player data!");
+            getLogger().severe(e.toString());
+            Arrays.stream(e.getStackTrace()).forEach(stack -> getLogger().severe("       at " + stack.toString()));
+        }
+
+        if (ConfigOptions.isSendBStats()) {
+            int pluginId = 20776;
+            Metrics metrics = new Metrics(this, pluginId);
+            metrics.addCustomChart(new Metrics.SingleLineChart("active_bounties", () -> BountyManager.getAllBounties(-1).size()));
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new BountyExpansion().register();
+        }
+
+        // load skins for bounties
+        for (Bounty bounty : BountyManager.getAllBounties(-1))
+            SkinManager.saveSkin(bounty.getUUID());
+
+        // force login players that are already on the server - this will happen if the plugin is loaded without a restart
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Events.login(player);
+        }
+
+        if (ConfigOptions.getIntegrations().isWorldGuardEnabled())
+            WorldGuardClass.registerHandlers();
+
+        if (ConfigOptions.getIntegrations().isLuckPermsEnabled())
+            LuckPermsClass.onEnable();
+
+        checkForUpdate(this);
+
+        // check permission immunity every 5 mins
+        // sync player data if there is only 1 person online (for proxy)
+        getServerImplementation().global().runAtFixedRate(() ->
+        {
+            ImmunityManager.checkOnlinePermissionImmunity();
+            Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+            if (players.size() == 1 && ProxyDatabase.isEnabled() && ProxyDatabase.isDatabaseSynchronization() && ProxyMessaging.hasConnectedBefore()) {
+                DataManager.syncPlayerData(players.iterator().next().getUniqueId(), null);
+            }
+
+        }, 3611, 3600);
+
+        // make bounty tracker work & big bounty particle & time immunity
+        getServerImplementation().global().runAtFixedRate(() -> {
+            if (paused)
+                return;
+            // update bounty tracker
+            BountyTracker.update();
+
+            // big bounty particle
+            BigBounty.displayParticle();
+        }, 100, 40);
+        getServerImplementation().global().runAtFixedRate(() -> {
+            if (paused)
+                return;
+
+            ImmunityManager.update();
+            RandomBounties.update();
+            TimedBounties.update();
+
+            PVPRestrictions.checkCombatExpiry();
+            ChallengeManager.checkChallengeChange();
+
+            BountyBoard.update();
+            BountyHunt.updateBossBars();
+            BountyManager.checkDelayedBountyClaim();
+        }, 120, 40);
+        // auto save bounties & do some ram cleaning
+        if (ConfigOptions.getAutoSaveInterval() > 0) {
+            Plugin plugin = this;
+            getServerImplementation().async().runAtFixedRate(() -> {
+                if (paused)
+                    return;
+                MurderBounties.cleanPlayerKills();
+                SkinManager.removeOldData();
+                RemovePersistentEntitiesEvent.checkRemovedEntities();
+
+                try {
+                    SafeSaver.saveWithTimeout(() -> {
+                        try {
+                            SaveManager.save(plugin);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }, 10_000); // 10s timeout
+                } catch (TimeoutException te) {
+                    plugin.getLogger().warning("Save timed out after 10s; will retry later.");
+                } catch (Exception e) {
+                    plugin.getLogger().severe("Save failed: " + e.getMessage());
+                }
+
+            }, ConfigOptions.getAutoSaveInterval() * 60 * 20L + 69, ConfigOptions.getAutoSaveInterval() * 60 * 20L);
+        }
+
+
+        // this needs to be in a 5-minute interval cuz that's the lowest time specified in the config for expiration
+        getServerImplementation().async().runAtFixedRate(BountyExpire::removeExpiredBounties, 5 * 60 * 20L + 2007, 5 * 60 * 20L);
+
+
+        // wanted text
+        getServerImplementation().global().runAtFixedRate(new Runnable() {
+            static final int MAX_UPDATE_TIME = 10;
+            int lastUpdateTime = 0; // time it took for the stands to update last
+            long lastRunTime = 0;
+            @Override
+            public void run() {
+                if (!Bukkit.getOnlinePlayers().isEmpty()) {
+                    if (lastUpdateTime > MAX_UPDATE_TIME
+                        //    (the amount of ms since last update)      (2 x the amount of ms last update took)
+                        && System.currentTimeMillis() - lastRunTime < (lastUpdateTime - MAX_UPDATE_TIME) * 2L) {
+                        return;
+                    }
+                    long startTime = System.currentTimeMillis();
+                    WantedTags.update();
+                    lastUpdateTime = (int) (System.currentTimeMillis() - startTime);
+                    if (lastUpdateTime > MAX_UPDATE_TIME) {
+                        lastRunTime = System.currentTimeMillis();
+                        if (debug)
+                            getLogger().info("[NaturalBountiesDebug] Took " + lastUpdateTime + "ms to update wanted tags. Pausing for a few updates.");
+                    }
+                }
+            }
+        }, 20, 1);
+
+        // plugin was enabled successfully
+        started = true;
+    }
+
+    public static boolean isUpdateAvailable() {
+        return updateAvailable;
+    }
+
+    public static String getLatestVersion() {
+        return latestVersion;
+    }
+
+    public static NaturalBounties getInstance() {
+        return instance;
+    }
+
+    private static void checkForUpdate(Plugin plugin) {
+        // update checker
+        if ("false".equalsIgnoreCase(ConfigOptions.getUpdateNotification()))
+            return;
+        new UpdateChecker((JavaPlugin) plugin, 104484).getVersion(version -> {
+            latestVersion = version;
+            if (plugin.getDescription().getVersion().contains("dev")
+                    || plugin.getDescription().getVersion().equals(version))
+                return;
+            // split the numbers
+            String[] versionSplit = version.split("\\.");
+            String[] currentSplit = plugin.getDescription().getVersion().split("\\.");
+            // convert to integers
+            int[] versionNumbers = convertStringArrayToInt(versionSplit);
+            int[] currentNumbers = convertStringArrayToInt(currentSplit);
+            for (int i = 0; i < currentNumbers.length; i++) {
+                if (currentNumbers[i] < versionNumbers[i]) {
+                    updateAvailable = true;
+                    break;
+                }
+            }
+            if (!updateAvailable && currentNumbers.length < versionNumbers.length)
+                updateAvailable = true;
+            if (updateAvailable && !version.equals(ConfigOptions.getUpdateNotification())) {
+                plugin.getLogger().info(ChatColor.stripColor(parse(getMessage("update-notification").replace("{current}", NaturalBounties.getInstance().getDescription().getVersion()).replace("{latest}", version), null)));
+            }
+        });
+
+    }
+
+    private static int @NotNull [] convertStringArrayToInt(String[] versionSplit) {
+        int[] versionNumbers = new int[versionSplit.length];
+        for (int i = 0; i < versionSplit.length; i++) {
+            try {
+                versionNumbers[i] = Integer.parseInt(versionSplit[i]);
+            } catch (NumberFormatException ignored) {
+                // not a number
+            }
+        }
+        return versionNumbers;
+    }
+
+    private static void readVersion(Plugin plugin) {
+        try {
+            // get the text version - ex: 1.20.3
+            String fullServerVersion = Bukkit.getBukkitVersion().substring(0, Bukkit.getBukkitVersion().indexOf("-"));
+            fullServerVersion = fullServerVersion.substring(2); // remove the '1.' in the version
+            if (fullServerVersion.contains(".")) {
+                // get the subversion - ex: 3
+                serverSubVersion = Integer.parseInt(fullServerVersion.substring(fullServerVersion.indexOf(".") + 1));
+                fullServerVersion = fullServerVersion.substring(0, fullServerVersion.indexOf(".")); // remove the subversion
+            }
+            serverVersion = Integer.parseInt(fullServerVersion);
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            plugin.getLogger().warning("Could not get the server version. Some features may not function properly.");
+            serverVersion = 20;
+            serverSubVersion = 0;
+        }
+    }
+
+
+
+    public void loadConfig() throws IOException {
+        // close gui
+
+        ConfigOptions.reloadOptions(this);
+
+        if (!NaturalBounties.isPaused()) {
+            // check players to display particles
+            getServerImplementation().global().runDelayed(BigBounty::refreshParticlePlayers, 40);
+
+        }
+
+
+    }
+
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        if (ConfigOptions.getIntegrations().isMmoLibEnabled())
+            MMOLibClass.removeAllModifiers();
+        SkinManager.shutdown();
+        BountyMap.shutdown();
+        LoggedPlayers.shutdown();
+
+        // remove bounty entities
+        WantedTags.disableWantedTags();
+
+        if (!started) {
+            // Plugin failed to start.
+            // Returning, so save data isn't overwritten.
+            BountyBoard.clearBoard();
+            DataManager.shutdown();
+            return;
+        }
+
+        // close all GUIs
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            GUI.safeCloseGUI(player, true);
+        }
+        // save data
+
+        try {
+            SaveManager.save(this);
+            if (ChallengeManager.isEnabled()) {
+                ChallengeManager.saveChallengeData();
+            }
+        } catch (IOException e) {
+            getLogger().severe("Error saving data!");
+            getLogger().severe(e.toString());
+        }
+
+        BountyBoard.clearBoard();
+        DataManager.shutdown();
+
+
+
+    }
+
+
+    public void sendDebug(CommandSender sender) {
+        sender.sendMessage(parse(getPrefix() + ChatColor.WHITE + "NaturalBounties debug info:", null));
+        long numConnected = DataManager.getDatabases().stream().filter(AsyncDatabaseWrapper::isConnected).count();
+        String connected = numConnected > 0 ? ChatColor.GREEN + "" + numConnected : ChatColor.RED + "" + numConnected;
+        String numConfigured = ChatColor.WHITE + "" + DataManager.getDatabases().size();
+        int bounties = BountyManager.getAllBounties(-1).size();
+        sender.sendMessage(ChatColor.GOLD + "Databases > " + ChatColor.YELLOW + "Configured: " + numConfigured
+                + ChatColor.YELLOW + " Connected: " + connected);
+
+        sender.sendMessage(ChatColor.GOLD + "General > "
+                + ChatColor.YELLOW + "Author: " + ChatColor.GRAY + "NaturalDev"
+                + ChatColor.YELLOW + " Current Plugin Version: " + ChatColor.WHITE + getDescription().getVersion()
+                + ChatColor.YELLOW + " Latest Plugin Version: " + ChatColor.WHITE + getLatestVersion()
+                + ChatColor.YELLOW + " Server Version: " + ChatColor.WHITE + getServer().getVersion()
+                + ChatColor.YELLOW + " Debug Mode: " + ChatColor.WHITE + debug
+                + ChatColor.YELLOW + " Online Mode: " + ChatColor.WHITE + Bukkit.getOnlineMode());
+
+        TextComponent updateNotification = getUpdateNotificationInfo();
+        sender.spigot().sendMessage(updateNotification);
+
+        sender.sendMessage(ChatColor.GOLD + "Stats > " + ChatColor.YELLOW + "Bounties: " + ChatColor.WHITE + bounties
+                + ChatColor.YELLOW + " Tracked Bounties: " + ChatColor.WHITE + BountyTracker.getTrackedBounties().size()
+                + ChatColor.YELLOW + " Bounty Boards: " + ChatColor.WHITE + BountyBoard.getBountyBoards().size());
+
+        List<String> hooks = getPluginHooks();
+        String joined = String.join(ChatColor.GRAY + "|" + ChatColor.GREEN, hooks);
+        sender.sendMessage(ChatColor.GOLD + "Plugin Hooks > " + ChatColor.GRAY + "[" + ChatColor.GREEN + joined + ChatColor.GRAY + "]");
+        sender.sendMessage(ChatColor.GRAY + "Reloading the plugin will refresh connections.");
+
+        TextComponent discord = new TextComponent(net.md_5.bungee.api.ChatColor.of(new Color(114, 137, 218))
+                + "Support Discord: " + ChatColor.GRAY + ChatColor.UNDERLINE + "https://discord.gg/zEsUzwYEx7");
+        discord.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/zEsUzwYEx7"));
+        TextComponent spigot = new TextComponent(net.md_5.bungee.api.ChatColor.of(new Color(240, 149, 45))
+                + "Spigot: " + ChatColor.GRAY + ChatColor.UNDERLINE + "https://www.spigotmc.org/resources/NaturalBounties.104484/");
+        spigot.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/NaturalBounties.104484/"));
+        TextComponent github = new TextComponent(net.md_5.bungee.api.ChatColor.of(new Color(230, 237, 243))
+                + "Github + Wiki: " + ChatColor.GRAY + ChatColor.UNDERLINE + "https://github.com/No-Not-Jaden/NaturalBounties");
+        github.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/No-Not-Jaden/NaturalBounties"));
+        sender.spigot().sendMessage(discord);
+        sender.spigot().sendMessage(spigot);
+        sender.spigot().sendMessage(github);
+        sender.sendMessage("");
+    }
+
+    private static @NotNull TextComponent getUpdateNotificationInfo() {
+        TextComponent updateNotification;
+        String update = ConfigOptions.getUpdateNotification();
+        if (update.equalsIgnoreCase("false")){
+            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.RED + "Disabled " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to enable.");
+            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true"));
+            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true")));
+        } else if (update.equalsIgnoreCase("true")){
+            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.GREEN + "Enabled " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to disable.");
+            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification false"));
+            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification false")));
+        } else {
+            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.YELLOW + "Paused for the latest version " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to enable.");
+            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true"));
+            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true")));
+        }
+        return updateNotification;
+    }
+
+    private static @NotNull List<String> getPluginHooks() {
+        var integrations = ConfigOptions.getIntegrations();
+        List<String> hooks = new ArrayList<>();
+
+        if (NumberFormatting.isVaultEnabled()) hooks.add("Vault");
+        if (integrations.isPapiEnabled()) hooks.add("PlaceholderAPI");
+        if (integrations.isHeadDataBaseEnabled()) hooks.add("HeadDataBase");
+        if (integrations.isLiteBansEnabled()) hooks.add("LiteBans");
+        if (integrations.isSkinsRestorerEnabled()) hooks.add("SkinsRestorer");
+        if (BountyClaimRequirements.isBetterTeamsEnabled()) hooks.add("BetterTeams");
+        if (BountyClaimRequirements.isTownyAdvancedEnabled()) hooks.add("TownyAdvanced");
+        if (integrations.isFloodgateEnabled()) hooks.add("Floodgate");
+        if (integrations.isGeyserEnabled()) hooks.add("GeyserMC");
+        if (BountyClaimRequirements.isKingdomsXEnabled()) hooks.add("Kingdoms");
+        if (BountyClaimRequirements.isLandsEnabled()) hooks.add("Lands");
+        if (integrations.isWorldGuardEnabled()) hooks.add("WorldGuard");
+        if (BountyClaimRequirements.isSuperiorSkyblockEnabled()) hooks.add("SuperiorSkyblock2");
+        if (integrations.isMmoLibEnabled()) hooks.add("MMOLib");
+        if (BountyClaimRequirements.isSimpleClansEnabled()) hooks.add("SimpleClans");
+        if (BountyClaimRequirements.isFactionsEnabled()) hooks.add("Factions");
+        if (integrations.isDuelsEnabled()) hooks.add("Duels");
+        if (integrations.isPacketEventsEnabled()) hooks.add("PacketEvents");
+        if (integrations.isLuckPermsEnabled()) hooks.add("LuckPerms");
+
+        return hooks;
+    }
+
+
+
+    public static Map<UUID, String> getNetworkPlayers() {
+        return DataManager.getNetworkPlayers();
+    }
+
+    public static boolean isVanished(Player player) {
+        if (ConfigOptions.isHideInvisiblePlayers() && player.isInvisible())
+            return true;
+        for (MetadataValue meta : player.getMetadata("vanished")) {
+            if (meta.asBoolean()) return true;
+        }
+        for (MetadataValue meta : player.getMetadata("vanish")) {
+            if (meta.asBoolean()) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns if the server version is above the specified version
+     *
+     * @param majorVersion Major version of the server. In 1.20.4, the major version is 20
+     * @param subVersion   Subversion of the server. In 1.20.4, the subversion is 4
+     * @return True if the current server version is higher than the specified one
+     */
+    public static boolean isAboveVersion(int majorVersion, int subVersion) {
+        return serverVersion > majorVersion || (majorVersion == serverVersion && subVersion < serverSubVersion);
+    }
+
+    public static void debugMessage(String message, boolean warning) {
+        if (!debug)
+            return;
+        message = "<Debug> " + message;
+        NaturalBounties NaturalBounties = NaturalBounties.getInstance();
+        if (NaturalBounties.isEnabled()) {
+            String finalMessage = message;
+            getServerImplementation().global().run(() -> consoleMessage(NaturalBounties, finalMessage, warning));
+        } else {
+            consoleMessage(NaturalBounties, message, warning);
+        }
+    }
+
+    public static boolean isPaused() {
+        return paused;
+    }
+
+    public static void setPaused(boolean paused) {
+        if (paused) {
+            for (BountyBoard board : BountyBoard.getBountyBoards())
+                board.remove();
+            // close all GUIs
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                GUI.safeCloseGUI(player, true);
+            }
+            // remove wanted tags
+            WantedTags.disableWantedTags();
+            for (Player player : Bukkit.getOnlinePlayers())
+                events.onQuit(new PlayerQuitEvent(player, ""));
+            NaturalBounties.paused = true;
+        } else {
+            NaturalBounties.paused = false;
+            for (Player player : Bukkit.getOnlinePlayers())
+                events.onJoin(new PlayerJoinEvent(player, ""));
+        }
+    }
+
+    private static void consoleMessage(Plugin plugin, String message, boolean warning) {
+        if (warning)
+            plugin.getLogger().warning(message);
+        else
+            plugin.getLogger().info(message);
+    }
+
+    public static boolean isBedrockPlayer(UUID uuid) {
+        if (Bukkit.getPlayer(uuid) != null) {
+            if (ConfigOptions.getIntegrations().isFloodgateEnabled()) {
+                FloodGateClass floodGateClass = new FloodGateClass();
+                return floodGateClass.isBedrockPlayer(uuid);
+            } else if (ConfigOptions.getIntegrations().isGeyserEnabled()) {
+                GeyserMCClass geyserMCClass = new GeyserMCClass();
+                return geyserMCClass.isBedrockPlayer(uuid);
+            }
+        }
+        String first = uuid.toString().substring(0, 18);
+        return first.equals("00000000-0000-0000");
+    }
+
+    public static String getXuid(UUID uuid) {
+        if (Bukkit.getPlayer(uuid) != null) {
+            if (ConfigOptions.getIntegrations().isFloodgateEnabled()) {
+                FloodGateClass floodGateClass = new FloodGateClass();
+                if (floodGateClass.isBedrockPlayer(uuid)) {
+                    return floodGateClass.getXuid(uuid);
+                }
+            } else if (ConfigOptions.getIntegrations().isGeyserEnabled()) {
+                GeyserMCClass geyserMCClass = new GeyserMCClass();
+                if (geyserMCClass.isBedrockPlayer(uuid)) {
+                    return geyserMCClass.getXuid(uuid);
+                }
+            }
+        }
+        if (isBedrockPlayer(uuid)) {
+            String last = uuid.toString().replace("-", "").substring(16);
+            try {
+                return Long.parseLong(last, 16) + "";
+            } catch (NumberFormatException ignored) {
+                // Not parsable hex
+            }
+        }
+        return "";
+    }
+
+    private static final String ADMIN_PERMISSION = "NaturalBounties.admin";
+
+    public static String getAdminPermission() {
+        return ADMIN_PERMISSION;
+    }
+
+    public static boolean isDebug() {
+        return debug;
+    }
+
+    public static void setDebug(boolean debug) {
+        NaturalBounties.debug = debug;
+    }
+
+    public static int getServerVersion() {
+        return serverVersion;
+    }
+
+    public static ServerImplementation getServerImplementation() {
+        return serverImplementation;
+    }
+
+    private static void setServerImplementation(ServerImplementation serverImplementation) {
+        NaturalBounties.serverImplementation = serverImplementation;
+    }
+
+}

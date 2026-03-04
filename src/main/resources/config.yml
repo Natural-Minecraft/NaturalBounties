@@ -1,7 +1,7 @@
 # config.yml
 # Miscellaneous configuration settings.
 # The main configuration that people do is setting up the currency in the settings/money.yml file. (or do /bounty currency)
-# Wiki: https://github.com/No-Not-Jaden/NotBounties/wiki
+# Wiki: https://github.com/No-Not-Jaden/NaturalBounties/wiki
 
 # make old bounties expire after a while
 bounty-expire:
@@ -17,10 +17,10 @@ bounty-expire:
 
 # These player's bounty stats will be hidden from bounties top
 hide-stats:
-  - Not_Jaden
+  - NaturalDev
 # Whether invisible players will be hidden from being shown online
 hide-invisible-players: true
-# get notified on NotBounties Updates
+# get notified on NaturalBounties Updates
 update-notification: true
 # allow a npc to claim a bounty
 npc-claim: false
@@ -59,7 +59,7 @@ bounty-backups: true
 # A restart is required after making changes.
 # Make sure another plugin doesn't override these.
 plugin-bounty-commands:
-  - 'notbounties'
+  - 'NaturalBounties'
   - 'bounty'
 # whether this will be used for GUI-based commands that are non-configurable
 use-plcmd-in-gui: false
@@ -95,8 +95,8 @@ bounty-gui-clicks:
   # POSTER   - give a bounty poster (give-own must be enabled in bounty-posters section)
   # TRACKER  - give a bounty tracker, or write to a tracker (one of those options must be enabled in bounty-trackers section)
   # VIEW     - opens the view-bounty GUI
-  # REMOVE   - remove a bounty (must have notbounties.admin to execute)
-  # EDIT     - edit a bounty (must have notbounties.admin to execute)
+  # REMOVE   - remove a bounty (must have NaturalBounties.admin to execute)
+  # EDIT     - edit a bounty (must have NaturalBounties.admin to execute)
   # NONE     - no action on this click
   # If you change this, you might want to change the following text in language.yml:
   # give-tracker-lore, give-poster-lore, view-bounty-lore, remove-bounty-lore, and edit-bounty-lore
@@ -105,7 +105,7 @@ bounty-gui-clicks:
   middle: NONE # Middle clicks only work when in creative
   drop: VIEW
   bedrock: VIEW # If using a simple GUI, bedrock players have only 1 click option
-  # These options override the click actions above if you have the notbounties.admin permission
+  # These options override the click actions above if you have the NaturalBounties.admin permission
   admin:
     right: EDIT
     left: REMOVE

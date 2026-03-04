@@ -1,7 +1,7 @@
 # immunity.yml
 # Prevent bounties from being set on you.
 
-# players can buy immunity from having bounties set on them as opposed to having immunity from the permission node notbounties.immune
+# players can buy immunity from having bounties set on them as opposed to having immunity from the permission node NaturalBounties.immune
 # Immunity types:
 # DISABLE
 # PERMANENT
@@ -9,8 +9,8 @@
 # TIME
 type: SCALING
 
-# Allow the notbounties.immune and other immunity permissions to give a player immunity.
-# Note: Anyone with the * permission will also have this. Fix: https://github.com/No-Not-Jaden/NotBounties/wiki/FAQ#how-do-i-make-operatorsadmins-not-immune-to-bounties
+# Allow the NaturalBounties.immune and other immunity permissions to give a player immunity.
+# Note: Anyone with the * permission will also have this. Fix: https://github.com/No-Not-Jaden/NaturalBounties/wiki/FAQ#how-do-i-make-operatorsadmins-not-immune-to-bounties
 permission-immunity: false
 
 # this immunity type will never run out

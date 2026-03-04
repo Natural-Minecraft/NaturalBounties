@@ -38,10 +38,10 @@ currency:
   # ratio - a ratio of the currencies with their weights will be given
   # bimodal - add the first currency, remove the second
   add-single-currency: descending
-  # this option will change how involved NotBounties will be with currency transactions
-  # AUTOMATIC - NotBounties will do all the currency transactions
-  # PARTIAL - NotBounties will only do the currency transactions for auto-bounties
-  # MANUAL - NotBounties will not do any currency transactions, but will run the remove and add commands
+  # this option will change how involved NaturalBounties will be with currency transactions
+  # AUTOMATIC - NaturalBounties will do all the currency transactions
+  # PARTIAL - NaturalBounties will only do the currency transactions for auto-bounties
+  # MANUAL - NaturalBounties will not do any currency transactions, but will run the remove and add commands
   # I suggest pairing this up with the redeem-reward-later option for a voucher of proof
   manual-economy: AUTOMATIC
   # these options control setting bounties with any item as currency - ex: placing an enchanted sword as a bounty

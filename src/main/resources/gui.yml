@@ -19,7 +19,7 @@ custom-items:
     # this will cause the item to not have anything displayed when hovered over (Minecraft version 1.20.5 and higher)
     hide-tooltip: true
     # Commands to run when the item is clicked
-    # see https://github.com/No-Not-Jaden/NotBounties/wiki/Action-Commands for a description of the special actions you can use here
+    # see https://github.com/No-Not-Jaden/NaturalBounties/wiki/Action-Commands for a description of the special actions you can use here
     commands: []
   custom-head:
     material: player_head eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWRjZjJjMTk4ZjYxZGY1YTZkMGJhOTdkYmY5MGMzMzc5OTU0MDVjMTczOTZjMDE2Yzg1ZjZmM2ZlYTUyYzkwNiJ9fX0=
@@ -35,7 +35,7 @@ custom-items:
       - '&6enter bounty amount'
       - ''
     commands:
-      - '[cprompt] notbountiesadmin {player} {player1} <&eEnter in chat the bounty amount or type "cancel" to cancel.>'
+      - '[cprompt] NaturalBountiesadmin {player} {player1} <&eEnter in chat the bounty amount or type "cancel" to cancel.>'
   enter-hunt-time:
     material: WRITABLE_BOOK
     amount: 1
@@ -46,7 +46,7 @@ custom-items:
       - '&6enter hunt time'
       - ''
     commands:
-      - '[cprompt] notbountiesadmin {player} hunt {player1} <&eEnter in chat the hunt time minutes or type "cancel" to cancel.>'
+      - '[cprompt] NaturalBountiesadmin {player} hunt {player1} <&eEnter in chat the hunt time minutes or type "cancel" to cancel.>'
   exit:
     material: BARRIER
     amount: 1
@@ -70,13 +70,13 @@ custom-items:
     amount: 1
     name: '&c&lSet Bounty'
     commands:
-      - 'notbountiesadmin {player} set'
+      - 'NaturalBountiesadmin {player} set'
   set-whitelist:
     material: PAPER
     amount: 1
     name: '&f&lSet Whitelist'
     commands:
-      - 'notbountiesadmin {player} whitelist'
+      - 'NaturalBountiesadmin {player} whitelist'
   add1:
     material: LIME_STAINED_GLASS_PANE
     amount: 1
@@ -118,28 +118,28 @@ custom-items:
     amount: 1
     name: '&a&lYes'
     commands:
-      - '!@notbounties.admin notbountiesadmin {player} buy --confirm'
-      - '@notbounties.admin notbountiesadmin {player} remove {player1}'
+      - '!@NaturalBounties.admin NaturalBountiesadmin {player} buy --confirm'
+      - '@NaturalBounties.admin NaturalBountiesadmin {player} remove {player1}'
       - '[close]'
   yes-bounty:
     material: LIME_STAINED_GLASS_PANE
     amount: 1
     name: '&a&lYes'
     commands:
-      - 'notbountiesadmin {player} {player1} {page} --confirm'
+      - 'NaturalBountiesadmin {player} {player1} {page} --confirm'
       - '[close]'
   yes-bounty-item:
     material: LIME_STAINED_GLASS_PANE
     amount: 1
     name: '&a&lSet Bounty'
     commands:
-      - 'notbountiesadmin {player} {data} --confirm' # {data} is a special placeholder for GUI data. In the case of the bounty-item-select GUI, it contains the uuid of the bountied player as well as the items in the GUI
+      - 'NaturalBountiesadmin {player} {data} --confirm' # {data} is a special placeholder for GUI data. In the case of the bounty-item-select GUI, it contains the uuid of the bountied player as well as the items in the GUI
   yes-remove-immunity:
     material: LIME_STAINED_GLASS_PANE
     amount: 1
     name: '&a&lRemove {immunity} &a&lImmunity'
     commands:
-      - 'notbountiesadmin {player} immunity remove --confirm'
+      - 'NaturalBountiesadmin {player} immunity remove --confirm'
       - '[close]'
   no-setting:
     material: RED_STAINED_GLASS_PANE
@@ -152,13 +152,13 @@ custom-items:
     amount: 1
     name: '&c&lCancel'
     commands:
-      - 'notbountiesadmin {player}'
+      - 'NaturalBountiesadmin {player}'
   no:
     material: RED_STAINED_GLASS_PANE
     amount: 1
     name: '&c&lNo'
     commands:
-      - 'notbountiesadmin {player}'
+      - 'NaturalBountiesadmin {player}'
   add-offline:
     material: LEVER
     amount: 1
@@ -170,7 +170,7 @@ custom-items:
     amount: 1
     name: '&fReset whitelist'
     commands:
-      - 'notbountiesadmin {player} whitelist reset'
+      - 'NaturalBountiesadmin {player} whitelist reset'
       - '[gui] set-whitelist 1'
   return:
     material: WHITE_BED
@@ -212,7 +212,7 @@ custom-items:
       - '&7Current mode: &f{mode}'
       - ''
     commands:
-      - 'notbountiesadmin {player} whitelist toggle'
+      - 'NaturalBountiesadmin {player} whitelist toggle'
       - '[gui] settings-gui'
   toggle-broadcast:
     material: CRIMSON_SIGN
@@ -223,7 +223,7 @@ custom-items:
       - '&7Receive broadcasts: &f{notification}'
       - ''
     commands:
-      - 'notbountiesadmin {player} bdc'
+      - 'NaturalBountiesadmin {player} bdc'
       - '[gui] settings-gui'
   settings:
     material: COMPASS
@@ -268,7 +268,7 @@ custom-items:
       - '&3the player.'
       - ''
     commands:
-      - 'notbountiesadmin {player} {player1}'
+      - 'NaturalBountiesadmin {player} {player1}'
   next-challenge:
     material: CLOCK
     name: '&f&lNext Challenges in &e{next_challenges}'
@@ -360,7 +360,7 @@ leaderboard:
   head-lore:
     - '&7<&m                        &7>'
     - '&8&l{leaderboard_name}'
-    #- '&6%notbounties_top_{rank}_{leaderboard}%' this is better if you are using placeholderAPI
+    #- '&6%NaturalBounties_top_{rank}_{leaderboard}%' this is better if you are using placeholderAPI
     - '&6{rank}&8: &7{amount}'
     - '&7<&m                        &7>'
   layout:
@@ -451,7 +451,7 @@ select-price:
     - ''
     - '&7{player}'
     - '&cClick to set bounty'
-    #- '&7Immunity: &f%notbounties_immunity_formatted%'
+    #- '&7Immunity: &f%NaturalBounties_immunity_formatted%'
     - ''
   layout:
     1:
@@ -529,7 +529,7 @@ confirm:
   head-lore:
     - ''
     - '&7{player}'
-    #- '&7Total Bounty: &f%notbounties_bounty_formatted%'
+    #- '&7Total Bounty: &f%NaturalBounties_bounty_formatted%'
     - ''
   layout:
     1:

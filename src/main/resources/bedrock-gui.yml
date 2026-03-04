@@ -79,7 +79,7 @@ custom-components:
     text: '&8Reset whitelist'
     type: BUTTON
     commands:
-      - 'notbountiesadmin {viewer} whitelist reset'
+      - 'NaturalBountiesadmin {viewer} whitelist reset'
       - '[gui] set-whitelist 1'
   # Dropdown example
   remove-whitelist-player:
@@ -123,7 +123,7 @@ custom-components:
       - '{players}' # this will fill in all the online players
     commands:
       - ''
-      - '[@ll] notbountiesadmin {viewer} {dropdown}' # this will fill in to match the amount of options
+      - '[@ll] NaturalBountiesadmin {viewer} {dropdown}' # this will fill in to match the amount of options
   # Toggle example
   toggle-whitelist:
     text: '&f&lWhitelist Mode'
@@ -134,20 +134,20 @@ custom-components:
     # [on] only triggers the action if the toggle is on
     # [off] does the same thing but in reverse
     commands:
-      - '[on] notbountiesadmin {viewer} whitelist toggle whitelist'
-      - '[off] notbountiesadmin {viewer} whitelist toggle blacklist'
+      - '[on] NaturalBountiesadmin {viewer} whitelist toggle whitelist'
+      - '[off] NaturalBountiesadmin {viewer} whitelist toggle blacklist'
   toggle-broadcast:
     text: '&e&lBounty Broadcast'
     type: TOGGLE
     default: '{notification}'
     commands:
-      - '[on] notbountiesadmin {viewer} bdc enable'
-      - '[off] notbountiesadmin {viewer} bdc disable'
+      - '[on] NaturalBountiesadmin {viewer} bdc enable'
+      - '[off] NaturalBountiesadmin {viewer} bdc disable'
   toggle-broadcast-button:
     text: '&e&lBounty Broadcast: &f{notification}'
     type: BUTTON
     commands:
-      - 'notbountiesadmin {viewer} bdc'
+      - 'NaturalBountiesadmin {viewer} bdc'
       - '[gui] settings-gui 1'
   # Step_Slider example
   # this won't work for price select
@@ -207,7 +207,7 @@ custom-components:
     text: 'Player Name'
     type: INPUT
     commands:
-      - 'notbountiesadmin {viewer} {value}'
+      - 'NaturalBountiesadmin {viewer} {value}'
   fill:
     text: ''
     type: LABEL
@@ -215,21 +215,21 @@ custom-components:
     text: '&a&lYes'
     type: BUTTON
     commands:
-      - '!@notbounties.admin notbountiesadmin {viewer} buy --confirm'
-      - '@notbounties.admin notbountiesadmin {viewer} remove {slot13}'
+      - '!@NaturalBounties.admin NaturalBountiesadmin {viewer} buy --confirm'
+      - '@NaturalBounties.admin NaturalBountiesadmin {viewer} remove {slot13}'
       - '[close]'
   yes-bounty:
     text: '&a&lYes'
     type: BUTTON
     # {player} is the clicker, {player1} is the first player slot
     commands:
-      - 'notbountiesadmin {viewer} {player1} {page} --confirm'
+      - 'NaturalBountiesadmin {viewer} {player1} {page} --confirm'
       - '[close]'
   no:
     text: '&c&lNo'
     type: BUTTON
     commands:
-      - 'notbountiesadmin {viewer}'
+      - 'NaturalBountiesadmin {viewer}'
   remove-immunity:
     text: '&c&lRemove {immunity} &c&lImmunity'
     type: BUTTON
@@ -243,7 +243,7 @@ custom-components:
     text: '&a&lYes'
     type: BUTTON
     commands:
-      - 'notbountiesadmin {viewer} immunity remove --confirm'
+      - 'NaturalBountiesadmin {viewer} immunity remove --confirm'
       - '[gui] settings-gui 1'
   no-setting:
     text: '&c&lNo'
@@ -275,7 +275,7 @@ bounty-gui:
   player-image: 'https://mc-heads.net/head/{texture}.png'
   # these commands are activated when a player button is clicked
   player-button-commands:
-    - 'notbountiesadmin {viewer} check {player}'
+    - 'NaturalBountiesadmin {viewer} check {player}'
   # max amount of players shown in one page
   max-players: 10
   # extra components in the GUI
@@ -310,7 +310,7 @@ set-bounty:
   player-text: '&e&l{player}&8 <=> &0Immunity: &8{amount}'
   # these commands are activated when a player button is clicked
   player-button-commands:
-    - 'notbountiesadmin {viewer} {player}'
+    - 'NaturalBountiesadmin {viewer} {player}'
   max-players: 25
   components:
     -3: return-selection
@@ -326,7 +326,7 @@ set-whitelist:
   # a chat color will be added in front depending on if they are whitelisted or not
   player-text: '&l{player}'
   player-button-commands:
-    - 'notbountiesadmin {viewer} whitelist toggle {player}'
+    - 'NaturalBountiesadmin {viewer} whitelist toggle {player}'
     - '[gui] set-whitelist'
   components:
     -4: return-selection
@@ -355,7 +355,7 @@ select-price:
   # to use specific values of inputs, use {value<x>} where x is the component number
   # ex: {value3} will be the value of the price-select-input component
   completion-commands:
-    - 'notbountiesadmin {viewer} {player1} {quantity}'
+    - 'NaturalBountiesadmin {viewer} {player1} {quantity}'
   components:
     1: price-select-info
     2: price-select-slider

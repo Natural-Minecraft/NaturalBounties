@@ -1,8 +1,8 @@
-name: NotBounties
+name: NaturalBounties
 version: '${project.version}'
-main: me.jadenp.notbounties.NotBounties
+main: me.naturalsmp.NaturalBounties.NaturalBounties
 api-version: 1.13
-authors: [ Not_Jaden ]
+authors: [ NaturalDev ]
 description: kill...
 folia-supported: true
 softdepend:
@@ -27,129 +27,129 @@ softdepend:
   - Skript
   - Konquest
 commands:
-  notbounties:
+  NaturalBounties:
     description: Use all of the bounty commands.
-  notbountiesadmin:
+  NaturalBountiesadmin:
     description: Open the GUI for other people.
     aliases:
       - bountyadmin
 permissions:
-  notbounties.admin:
+  NaturalBounties.admin:
     default: op
     description: Remove or edit bounties.
-    children: [notbounties.cleanEntities]
-  notbounties.cleanentities:
+    children: [NaturalBounties.cleanEntities]
+  NaturalBounties.cleanentities:
     default: op
     description: Use the command /bounty cleanEntities (radius)
-  notbounties.set:
+  NaturalBounties.set:
     default: true
     description: Set bounties.
-  notbounties.view:
+  NaturalBounties.view:
     default: true
     description: View bounties and the bounty GUI.
-  notbounties.stats:
+  NaturalBounties.stats:
     default: true
     description: View your player stats and the leaderboard.
-  notbounties.buyown:
+  NaturalBounties.buyown:
     default: true
     description: Buy your own bounty.
-  notbounties.immune:
+  NaturalBounties.immune:
     default: false
     description: Immune to having bounties set on them.
-  notbounties.buyimmunity:
+  NaturalBounties.buyimmunity:
     default: true
     description: Buy immunity.
-  notbounties.removeimmunity:
+  NaturalBounties.removeimmunity:
     default: true
     description: Remove own immunity.
-  notbounties.tracker:
+  NaturalBounties.tracker:
     default: true
     description: Use a bounty tracker.
   # These tracker and poster perms override the settings in display.yml
-  notbounties.spawntracker:
+  NaturalBounties.spawntracker:
     default: false
     description: Spawn in a bounty tracker.
-  notbounties.writeemptytracker:
+  NaturalBounties.writeemptytracker:
     default: false
     description: Write a bounty into an empty tracker.
-  notbounties.washtracker:
+  NaturalBounties.washtracker:
     default: false
     description: Wash a bounty tracker.
-  notbounties.crafttracker:
+  NaturalBounties.crafttracker:
     default: false
     description: Craft a bounty tracker.
-  notbounties.postertracking:
+  NaturalBounties.postertracking:
     default: false
     description: Click on a poster with an empty tracker to track it.
-  notbounties.spawnposter:
+  NaturalBounties.spawnposter:
     default: false
     description: Spawn in a bounty poster.
-  notbounties.washposter:
+  NaturalBounties.washposter:
     default: false
     description: Wash a bounty poster.
-  notbounties.craftposter:
+  NaturalBounties.craftposter:
     default: false
     description: Craft a bounty poster.
-  notbounties.writeposter:
+  NaturalBounties.writeposter:
     default: false
     description: Write a bounty poster to an empty map.
-  notbounties.whitelist:
+  NaturalBounties.whitelist:
     default: true
     description: Whitelist players to claim your bounty.
-  notbounties.basic:
+  NaturalBounties.basic:
     default: true
     description: Use help, tutorial, and broadcast commands.
     children:
-      notbounties.basic.tutorial: true
-  notbounties.basic.tutorial:
+      NaturalBounties.basic.tutorial: true
+  NaturalBounties.basic.tutorial:
     default: true
     description: Use the tutorial command.
-  notbounties.removeset:
+  NaturalBounties.removeset:
     default: false
     description: Remove bounties you set.
-  notbounties.challenges:
+  NaturalBounties.challenges:
     default: true
     description: View bounty challenges.
-  notbounties.claim:
+  NaturalBounties.claim:
     default: true
     description: Claim a bounty.
-  notbounties.player:
+  NaturalBounties.player:
     description: All the basic player permissions.
     children:
-      - notbounties.set
-      - notbounties.view
-      - notbounties.buyown
-      - notbounties.buyimmunity
-      - notbounties.removeimmunity
-      - notbounties.tracker
-      - notbounties.whitelist
-      - notbounties.basic
-      - notbounties.challenges
-      - notbounties.stats
-      - notbounties.claim
-      - notbounties.sort
-  notbounties.immunity.murder:
+      - NaturalBounties.set
+      - NaturalBounties.view
+      - NaturalBounties.buyown
+      - NaturalBounties.buyimmunity
+      - NaturalBounties.removeimmunity
+      - NaturalBounties.tracker
+      - NaturalBounties.whitelist
+      - NaturalBounties.basic
+      - NaturalBounties.challenges
+      - NaturalBounties.stats
+      - NaturalBounties.claim
+      - NaturalBounties.sort
+  NaturalBounties.immunity.murder:
     default: false
     description: Immune to murder auto-bounties.
-  notbounties.immunity.random:
+  NaturalBounties.immunity.random:
     default: false
     description: Immune to random auto-bounties.
-  notbounties.immunity.timed:
+  NaturalBounties.immunity.timed:
     default: false
     description: Immune to timed auto-bounties.
-  notbounties.hunt:
+  NaturalBounties.hunt:
     default: true
     description: Allow players to use the bounty hunt feature.
     children:
-      - notbounties.hunt.start
-      - notbounties.hunt.participate
-  notbounties.hunt.start:
+      - NaturalBounties.hunt.start
+      - NaturalBounties.hunt.participate
+  NaturalBounties.hunt.start:
     default: true
     description: Start a bounty hunt.
-  notbounties.hunt.participate:
+  NaturalBounties.hunt.participate:
     default: true
     description: Join or leave a bounty hunt.
-  notbounties.sort:
+  NaturalBounties.sort:
     default: true
     description: Sort guis.
 libraries:

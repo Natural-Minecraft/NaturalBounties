@@ -1,5 +1,5 @@
 # a '#' after a line means only admins will see this message, if there is not a '#', then with all the other permissions, players can see this message
-prefix: '&7[&9Not&dBounties&7] &8» &r'
+prefix: '<gradient:#33EEBB:#3388BB><b>Bounties</b></gradient> &7» '
 # The prefix and suffix will show in front of every player name with a few exceptions - you can use placeholderapi here
 player-prefix: ''
 player-suffix: ''
@@ -165,7 +165,7 @@ challenge-claim-deny: '&cYou can''t claim this challenge!'
 trickle-bounty: '&2{amount}&e of &6{player}''s &ebounty has been transferred to yours.'
 natural-death: '&2{amount}&e of your bounty has been lost for dying.'
 bedrock-open-gui: '&eOpening Form...' # set to: '' if you don't want this message sent
-paused: '&cNotBounties is paused. To use this feature again, do &a/bounty unpause' #
+paused: '&cNaturalBounties is paused. To use this feature again, do &a/bounty unpause' #
 bounty-set-cooldown: '&cPlease wait {time} before you can set another bounty.'
 update-notification: "&eA new update is available. Current version: &6{current} &eLatest Version: &a{latest} \n&eDownload a new version here: &7https://www.spigotmc.org/resources/104484/"
 skip-update: '&f&o&nClick to skip this update.'
@@ -195,7 +195,7 @@ permission-immunity-random: '&cYou are immune to random bounties due to a permis
 permission-immunity-murder: '&cYou are immune to murder bounties due to a permission.'
 permission-immunity-timed: '&cYou are immune to timed bounties due to a permission.'
 sort-change: '&eYour sort type for &f{gui} &ehas been changed to &f{sort_type}&e.'
-# These are the text that replaces the {sort_type}/{sort_type_(gui)} placeholder in this file and for the %notbounties_sort_(gui)% placeholder
+# These are the text that replaces the {sort_type}/{sort_type_(gui)} placeholder in this file and for the %NaturalBounties_sort_(gui)% placeholder
 sort-type:
   bounty:
     0: 'Newest'

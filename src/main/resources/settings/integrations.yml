@@ -2,7 +2,7 @@
 # Control integrations with other plugins. "/bounty debug" will highlight hooked plugins in green.
 # You can toggle the vault hook in money.yml.
 
-# Use NotBounties' methods to get skins
+# Use NaturalBounties' methods to get skins
 override-skinsrestorer: false
 
 # allow players on the same team claim each-other's bounties

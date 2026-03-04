@@ -4,20 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.jadenp</groupId>
-    <artifactId>NotBounties</artifactId>
+    <groupId>id.naturalsmp</groupId>
+    <artifactId>NaturalBounties</artifactId>
     <version>dev_1.22.33.11</version>
     <packaging>jar</packaging>
 
-    <name>NotBounties</name>
+    <name>NaturalBounties</name>
 
-    <description>kill...</description>
+    <description>Kill for rewards!</description>
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -66,12 +67,12 @@
                     <relocations>
                         <!--<relocation>
                             <pattern>io.lettuce.lettuce-core</pattern>
-                            <shadedPattern>me.jadenp.notbounties.internal.lettuce-core
+                            <shadedPattern>me.naturalsmp.NaturalBounties.internal.lettuce-core
                             </shadedPattern>
                         </relocation>-->
                         <relocation>
                             <pattern>com.cjcrafter.foliascheduler</pattern>
-                            <shadedPattern>me.jadenp.notbounties.internal.foliascheduler</shadedPattern>
+                            <shadedPattern>id.naturalsmp.naturalbounties.internal.foliascheduler</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
