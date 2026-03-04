@@ -53,16 +53,17 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.TimeoutException;
 
-
 import static me.naturalsmp.NaturalBounties.features.LanguageOptions.*;
 
 /**
  * Go through wiki for outdated materials
  * Update front page
- * Separate messages sent to the proxy if they are too big. (Velocity version too)
+ * Separate messages sent to the proxy if they are too big. (Velocity version
+ * too)
  * Team bounties
  * Bungee support.
- * Better SQL and Redis config with connection string and address options to replace others.
+ * Better SQL and Redis config with connection string and address options to
+ * replace others.
  * Redo vouchers with persistent data, give items, & reward delay
  * Redis Pub Sub messages for player data storage. - proxy messaging too
  * database message table with server IDs
@@ -109,7 +110,6 @@ public final class NaturalBounties extends JavaPlugin {
         setInstance(this);
         Integrations.onLoad(this);
     }
-
 
     @Override
     public void onEnable() {
@@ -179,7 +179,8 @@ public final class NaturalBounties extends JavaPlugin {
         if (ConfigOptions.isSendBStats()) {
             int pluginId = 20776;
             Metrics metrics = new Metrics(this, pluginId);
-            metrics.addCustomChart(new Metrics.SingleLineChart("active_bounties", () -> BountyManager.getAllBounties(-1).size()));
+            metrics.addCustomChart(
+                    new Metrics.SingleLineChart("active_bounties", () -> BountyManager.getAllBounties(-1).size()));
         }
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
@@ -190,7 +191,8 @@ public final class NaturalBounties extends JavaPlugin {
         for (Bounty bounty : BountyManager.getAllBounties(-1))
             SkinManager.saveSkin(bounty.getUUID());
 
-        // force login players that are already on the server - this will happen if the plugin is loaded without a restart
+        // force login players that are already on the server - this will happen if the
+        // plugin is loaded without a restart
         for (Player player : Bukkit.getOnlinePlayers()) {
             Events.login(player);
         }
@@ -205,11 +207,11 @@ public final class NaturalBounties extends JavaPlugin {
 
         // check permission immunity every 5 mins
         // sync player data if there is only 1 person online (for proxy)
-        getServerImplementation().global().runAtFixedRate(() ->
-        {
+        getServerImplementation().global().runAtFixedRate(() -> {
             ImmunityManager.checkOnlinePermissionImmunity();
             Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-            if (players.size() == 1 && ProxyDatabase.isEnabled() && ProxyDatabase.isDatabaseSynchronization() && ProxyMessaging.hasConnectedBefore()) {
+            if (players.size() == 1 && ProxyDatabase.isEnabled() && ProxyDatabase.isDatabaseSynchronization()
+                    && ProxyMessaging.hasConnectedBefore()) {
                 DataManager.syncPlayerData(players.iterator().next().getUniqueId(), null);
             }
 
@@ -267,22 +269,23 @@ public final class NaturalBounties extends JavaPlugin {
             }, ConfigOptions.getAutoSaveInterval() * 60 * 20L + 69, ConfigOptions.getAutoSaveInterval() * 60 * 20L);
         }
 
-
-        // this needs to be in a 5-minute interval cuz that's the lowest time specified in the config for expiration
-        getServerImplementation().async().runAtFixedRate(BountyExpire::removeExpiredBounties, 5 * 60 * 20L + 2007, 5 * 60 * 20L);
-
+        // this needs to be in a 5-minute interval cuz that's the lowest time specified
+        // in the config for expiration
+        getServerImplementation().async().runAtFixedRate(BountyExpire::removeExpiredBounties, 5 * 60 * 20L + 2007,
+                5 * 60 * 20L);
 
         // wanted text
         getServerImplementation().global().runAtFixedRate(new Runnable() {
             static final int MAX_UPDATE_TIME = 10;
             int lastUpdateTime = 0; // time it took for the stands to update last
             long lastRunTime = 0;
+
             @Override
             public void run() {
                 if (!Bukkit.getOnlinePlayers().isEmpty()) {
                     if (lastUpdateTime > MAX_UPDATE_TIME
-                        //    (the amount of ms since last update)      (2 x the amount of ms last update took)
-                        && System.currentTimeMillis() - lastRunTime < (lastUpdateTime - MAX_UPDATE_TIME) * 2L) {
+                            // (the amount of ms since last update) (2 x the amount of ms last update took)
+                            && System.currentTimeMillis() - lastRunTime < (lastUpdateTime - MAX_UPDATE_TIME) * 2L) {
                         return;
                     }
                     long startTime = System.currentTimeMillis();
@@ -291,7 +294,8 @@ public final class NaturalBounties extends JavaPlugin {
                     if (lastUpdateTime > MAX_UPDATE_TIME) {
                         lastRunTime = System.currentTimeMillis();
                         if (debug)
-                            getLogger().info("[NaturalBountiesDebug] Took " + lastUpdateTime + "ms to update wanted tags. Pausing for a few updates.");
+                            getLogger().info("[NaturalBountiesDebug] Took " + lastUpdateTime
+                                    + "ms to update wanted tags. Pausing for a few updates.");
                     }
                 }
             }
@@ -337,7 +341,10 @@ public final class NaturalBounties extends JavaPlugin {
             if (!updateAvailable && currentNumbers.length < versionNumbers.length)
                 updateAvailable = true;
             if (updateAvailable && !version.equals(ConfigOptions.getUpdateNotification())) {
-                plugin.getLogger().info(ChatColor.stripColor(parse(getMessage("update-notification").replace("{current}", NaturalBounties.getInstance().getDescription().getVersion()).replace("{latest}", version), null)));
+                plugin.getLogger()
+                        .info(ChatColor.stripColor(parse(getMessage("update-notification")
+                                .replace("{current}", NaturalBounties.getInstance().getDescription().getVersion())
+                                .replace("{latest}", version), null)));
             }
         });
 
@@ -363,7 +370,8 @@ public final class NaturalBounties extends JavaPlugin {
             if (fullServerVersion.contains(".")) {
                 // get the subversion - ex: 3
                 serverSubVersion = Integer.parseInt(fullServerVersion.substring(fullServerVersion.indexOf(".") + 1));
-                fullServerVersion = fullServerVersion.substring(0, fullServerVersion.indexOf(".")); // remove the subversion
+                fullServerVersion = fullServerVersion.substring(0, fullServerVersion.indexOf(".")); // remove the
+                                                                                                    // subversion
             }
             serverVersion = Integer.parseInt(fullServerVersion);
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
@@ -372,8 +380,6 @@ public final class NaturalBounties extends JavaPlugin {
             serverSubVersion = 0;
         }
     }
-
-
 
     public void loadConfig() throws IOException {
         // close gui
@@ -385,7 +391,6 @@ public final class NaturalBounties extends JavaPlugin {
             getServerImplementation().global().runDelayed(BigBounty::refreshParticlePlayers, 40);
 
         }
-
 
     }
 
@@ -428,10 +433,7 @@ public final class NaturalBounties extends JavaPlugin {
         BountyBoard.clearBoard();
         DataManager.shutdown();
 
-
-
     }
-
 
     public void sendDebug(CommandSender sender) {
         sender.sendMessage(parse(getPrefix() + ChatColor.WHITE + "NaturalBounties debug info:", null));
@@ -459,18 +461,23 @@ public final class NaturalBounties extends JavaPlugin {
 
         List<String> hooks = getPluginHooks();
         String joined = String.join(ChatColor.GRAY + "|" + ChatColor.GREEN, hooks);
-        sender.sendMessage(ChatColor.GOLD + "Plugin Hooks > " + ChatColor.GRAY + "[" + ChatColor.GREEN + joined + ChatColor.GRAY + "]");
+        sender.sendMessage(ChatColor.GOLD + "Plugin Hooks > " + ChatColor.GRAY + "[" + ChatColor.GREEN + joined
+                + ChatColor.GRAY + "]");
         sender.sendMessage(ChatColor.GRAY + "Reloading the plugin will refresh connections.");
 
         TextComponent discord = new TextComponent(net.md_5.bungee.api.ChatColor.of(new Color(114, 137, 218))
                 + "Support Discord: " + ChatColor.GRAY + ChatColor.UNDERLINE + "https://discord.gg/zEsUzwYEx7");
         discord.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://discord.gg/zEsUzwYEx7"));
         TextComponent spigot = new TextComponent(net.md_5.bungee.api.ChatColor.of(new Color(240, 149, 45))
-                + "Spigot: " + ChatColor.GRAY + ChatColor.UNDERLINE + "https://www.spigotmc.org/resources/NaturalBounties.104484/");
-        spigot.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/NaturalBounties.104484/"));
+                + "Spigot: " + ChatColor.GRAY + ChatColor.UNDERLINE
+                + "https://www.spigotmc.org/resources/NaturalBounties.104484/");
+        spigot.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL,
+                "https://www.spigotmc.org/resources/NaturalBounties.104484/"));
         TextComponent github = new TextComponent(net.md_5.bungee.api.ChatColor.of(new Color(230, 237, 243))
-                + "Github + Wiki: " + ChatColor.GRAY + ChatColor.UNDERLINE + "https://github.com/No-Not-Jaden/NaturalBounties");
-        github.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/No-Not-Jaden/NaturalBounties"));
+                + "Github + Wiki: " + ChatColor.GRAY + ChatColor.UNDERLINE
+                + "https://github.com/No-Not-Jaden/NaturalBounties");
+        github.setClickEvent(
+                new ClickEvent(ClickEvent.Action.OPEN_URL, "https://github.com/No-Not-Jaden/NaturalBounties"));
         sender.spigot().sendMessage(discord);
         sender.spigot().sendMessage(spigot);
         sender.spigot().sendMessage(github);
@@ -480,18 +487,28 @@ public final class NaturalBounties extends JavaPlugin {
     private static @NotNull TextComponent getUpdateNotificationInfo() {
         TextComponent updateNotification;
         String update = ConfigOptions.getUpdateNotification();
-        if (update.equalsIgnoreCase("false")){
-            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.RED + "Disabled " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to enable.");
-            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true"));
-            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true")));
-        } else if (update.equalsIgnoreCase("true")){
-            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.GREEN + "Enabled " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to disable.");
-            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification false"));
-            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification false")));
+        if (update.equalsIgnoreCase("false")) {
+            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.RED
+                    + "Disabled " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to enable.");
+            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                    "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true"));
+            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                    new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true")));
+        } else if (update.equalsIgnoreCase("true")) {
+            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.GREEN
+                    + "Enabled " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to disable.");
+            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                    "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification false"));
+            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                    new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification false")));
         } else {
-            updateNotification = new TextComponent(ChatColor.GOLD + "Update Notification > " + ChatColor.YELLOW + "Paused for the latest version " + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to enable.");
-            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true"));
-            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true")));
+            updateNotification = new TextComponent(
+                    ChatColor.GOLD + "Update Notification > " + ChatColor.YELLOW + "Paused for the latest version "
+                            + ChatColor.GRAY + ChatColor.UNDERLINE + ChatColor.ITALIC + "Click to enable.");
+            updateNotification.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,
+                    "/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true"));
+            updateNotification.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                    new Text("/" + ConfigOptions.getPluginBountyCommands().get(0) + " update-notification true")));
         }
         return updateNotification;
     }
@@ -500,30 +517,47 @@ public final class NaturalBounties extends JavaPlugin {
         var integrations = ConfigOptions.getIntegrations();
         List<String> hooks = new ArrayList<>();
 
-        if (NumberFormatting.isVaultEnabled()) hooks.add("Vault");
-        if (integrations.isPapiEnabled()) hooks.add("PlaceholderAPI");
-        if (integrations.isHeadDataBaseEnabled()) hooks.add("HeadDataBase");
-        if (integrations.isLiteBansEnabled()) hooks.add("LiteBans");
-        if (integrations.isSkinsRestorerEnabled()) hooks.add("SkinsRestorer");
-        if (BountyClaimRequirements.isBetterTeamsEnabled()) hooks.add("BetterTeams");
-        if (BountyClaimRequirements.isTownyAdvancedEnabled()) hooks.add("TownyAdvanced");
-        if (integrations.isFloodgateEnabled()) hooks.add("Floodgate");
-        if (integrations.isGeyserEnabled()) hooks.add("GeyserMC");
-        if (BountyClaimRequirements.isKingdomsXEnabled()) hooks.add("Kingdoms");
-        if (BountyClaimRequirements.isLandsEnabled()) hooks.add("Lands");
-        if (integrations.isWorldGuardEnabled()) hooks.add("WorldGuard");
-        if (BountyClaimRequirements.isSuperiorSkyblockEnabled()) hooks.add("SuperiorSkyblock2");
-        if (integrations.isMmoLibEnabled()) hooks.add("MMOLib");
-        if (BountyClaimRequirements.isSimpleClansEnabled()) hooks.add("SimpleClans");
-        if (BountyClaimRequirements.isFactionsEnabled()) hooks.add("Factions");
-        if (integrations.isDuelsEnabled()) hooks.add("Duels");
-        if (integrations.isPacketEventsEnabled()) hooks.add("PacketEvents");
-        if (integrations.isLuckPermsEnabled()) hooks.add("LuckPerms");
+        if (NumberFormatting.isVaultEnabled())
+            hooks.add("Vault");
+        if (integrations.isPapiEnabled())
+            hooks.add("PlaceholderAPI");
+        if (integrations.isHeadDataBaseEnabled())
+            hooks.add("HeadDataBase");
+        if (integrations.isLiteBansEnabled())
+            hooks.add("LiteBans");
+        if (integrations.isSkinsRestorerEnabled())
+            hooks.add("SkinsRestorer");
+        if (BountyClaimRequirements.isBetterTeamsEnabled())
+            hooks.add("BetterTeams");
+        if (BountyClaimRequirements.isTownyAdvancedEnabled())
+            hooks.add("TownyAdvanced");
+        if (integrations.isFloodgateEnabled())
+            hooks.add("Floodgate");
+        if (integrations.isGeyserEnabled())
+            hooks.add("GeyserMC");
+        if (BountyClaimRequirements.isKingdomsXEnabled())
+            hooks.add("Kingdoms");
+        if (BountyClaimRequirements.isLandsEnabled())
+            hooks.add("Lands");
+        if (integrations.isWorldGuardEnabled())
+            hooks.add("WorldGuard");
+        if (BountyClaimRequirements.isSuperiorSkyblockEnabled())
+            hooks.add("SuperiorSkyblock2");
+        if (integrations.isMmoLibEnabled())
+            hooks.add("MMOLib");
+        if (BountyClaimRequirements.isSimpleClansEnabled())
+            hooks.add("SimpleClans");
+        if (BountyClaimRequirements.isFactionsEnabled())
+            hooks.add("Factions");
+        if (integrations.isDuelsEnabled())
+            hooks.add("Duels");
+        if (integrations.isPacketEventsEnabled())
+            hooks.add("PacketEvents");
+        if (integrations.isLuckPermsEnabled())
+            hooks.add("LuckPerms");
 
         return hooks;
     }
-
-
 
     public static Map<UUID, String> getNetworkPlayers() {
         return DataManager.getNetworkPlayers();
@@ -533,10 +567,12 @@ public final class NaturalBounties extends JavaPlugin {
         if (ConfigOptions.isHideInvisiblePlayers() && player.isInvisible())
             return true;
         for (MetadataValue meta : player.getMetadata("vanished")) {
-            if (meta.asBoolean()) return true;
+            if (meta.asBoolean())
+                return true;
         }
         for (MetadataValue meta : player.getMetadata("vanish")) {
-            if (meta.asBoolean()) return true;
+            if (meta.asBoolean())
+                return true;
         }
         return false;
     }
@@ -544,7 +580,8 @@ public final class NaturalBounties extends JavaPlugin {
     /**
      * Returns if the server version is above the specified version
      *
-     * @param majorVersion Major version of the server. In 1.20.4, the major version is 20
+     * @param majorVersion Major version of the server. In 1.20.4, the major version
+     *                     is 20
      * @param subVersion   Subversion of the server. In 1.20.4, the subversion is 4
      * @return True if the current server version is higher than the specified one
      */
@@ -556,12 +593,12 @@ public final class NaturalBounties extends JavaPlugin {
         if (!debug)
             return;
         message = "<Debug> " + message;
-        NaturalBounties NaturalBounties = NaturalBounties.getInstance();
-        if (NaturalBounties.isEnabled()) {
+        NaturalBounties plugin = NaturalBounties.getInstance();
+        if (plugin.isEnabled()) {
             String finalMessage = message;
-            getServerImplementation().global().run(() -> consoleMessage(NaturalBounties, finalMessage, warning));
+            getServerImplementation().global().run(() -> consoleMessage(plugin, finalMessage, warning));
         } else {
-            consoleMessage(NaturalBounties, message, warning);
+            consoleMessage(plugin, message, warning);
         }
     }
 
