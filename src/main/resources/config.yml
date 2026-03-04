@@ -21,7 +21,7 @@ hide-stats:
 # Whether invisible players will be hidden from being shown online
 hide-invisible-players: true
 # get notified on NaturalBounties Updates
-update-notification: true
+update-notification: false
 # allow a npc to claim a bounty
 npc-claim: false
 # limit bounties to a max number of setters - other players can't set a bounty on a player if the maximum has been hit - (-1) to disable

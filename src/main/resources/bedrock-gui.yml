@@ -264,7 +264,7 @@ selection-gui:
 bounty-gui:
   enabled: true
   # name of the gui
-  gui-name: '&d&lBounties &9&lPage'
+  gui-name: '&#33EEBB&lBounties &#3388BB&lPage'
   # this will add the page number at the end of the gui name
   add-page: true
   # this will remove items with actions of [next] or [back] if there is no next page or previous page
@@ -292,7 +292,7 @@ bounty-gui:
 # GUI to display top stats
 leaderboard:
   enabled: true
-  gui-name: '&d&lBounties &9&lTop'
+  gui-name: '&#33EEBB&lBounties &#3388BB&lTop'
   add-page: true
   remove-page-items: true
   player-text: '&e&l{player}&8 <=> &6{rank}&8: &0{amount}'
@@ -304,7 +304,7 @@ leaderboard:
 # GUI to select a player to set a bounty on
 set-bounty:
   enabled: true
-  gui-name: '&d&lSelect &9&lPlayer'
+  gui-name: '&#33EEBB&lSelect &#3388BB&lPlayer'
   add-page: true
   remove-page-items: true
   player-text: '&e&l{player}&8 <=> &0Immunity: &8{amount}'
@@ -319,7 +319,7 @@ set-bounty:
     1: next
 set-whitelist:
   enabled: true
-  gui-name: '&d&lSelect &0&lWhitelisted &9&lPlayers'
+  gui-name: '&#33EEBB&lSelect &0&lWhitelisted &#3388BB&lPlayers'
   add-page: true
   remove-page-items: true
   # this player text works a little different
@@ -337,7 +337,7 @@ set-whitelist:
 # custom form
 select-price:
   enabled: true
-  gui-name: '&d&lSelect &9&lBounty Value'
+  gui-name: '&#33EEBB&lSelect &#3388BB&lBounty Value'
   add-page: false
   remove-page-items: false
   player-text: 'Player: &e{player}'
@@ -375,7 +375,7 @@ confirm-bounty:
     2: no
 settings-gui:
   enabled: true
-  gui-name: '&9&lSettings'
+  gui-name: '&#3388BB&lSettings'
   components:
     -1: return-selection
     1: toggle-broadcast-button
@@ -391,7 +391,7 @@ challenges:
     -1: return-selection
 view-bounty:
   enabled: true
-  gui-name: '&d&l{player}''s &9&lBounty: &2{amount}'
+  gui-name: '&#33EEBB&l{player}''s &#3388BB&lBounty: &2{amount}'
   player-text: '&6{player}''s Contribution: &a{amount}'
   components:
     1: view-bounties

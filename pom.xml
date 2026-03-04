@@ -74,6 +74,10 @@
                             <pattern>com.cjcrafter.foliascheduler</pattern>
                             <shadedPattern>id.naturalsmp.naturalbounties.internal.foliascheduler</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.iridium.iridiumcolorapi</pattern>
+                            <shadedPattern>id.naturalsmp.naturalbounties.internal.iridiumcolorapi</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
@@ -158,6 +162,13 @@
         </repository>
     </repositories>
     <dependencies>
+
+        <!-- https://github.com/Iridium-Development/IridiumColorAPI -->
+        <dependency>
+            <groupId>com.github.Iridium-Development</groupId>
+            <artifactId>IridiumColorAPI</artifactId>
+            <version>1.0.6</version>
+        </dependency>
 
         <dependency>
             <groupId>org.spigotmc</groupId>

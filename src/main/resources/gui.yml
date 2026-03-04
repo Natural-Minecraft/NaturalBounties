@@ -228,7 +228,7 @@ custom-items:
   settings:
     material: COMPASS
     amount: 1
-    name: '&9&lSettings'
+    name: '&#3388BB&lSettings'
     lore:
       - '&7Open settings GUI.'
     commands:
@@ -293,7 +293,7 @@ bounty-gui:
   size: 54
   # name of the gui
   # you can use {page} and {page_max} separately from the add-page option
-  gui-name: '&d&lBounties &9&lPage'
+  gui-name: '&#33EEBB&lBounties &#3388BB&lPage'
   # this will add the page number at the end of the gui name
   add-page: true
   # this will remove items with actions of [next] or [back] if there is no next page or previous page
@@ -348,7 +348,7 @@ leaderboard:
   # in all text in this GUI, including text coming from custom items,
   # {leaderboard} will be replaced with the raw leaderboard name (good for commands)
   # {leaderboard_name} will be replaced with the name from the language.yml file under bounty-stats.(leaderboard).name
-  gui-name: '&d&lBounties &9&lTop: &7{leaderboard_name}'
+  gui-name: '&#33EEBB&lBounties &#3388BB&lTop: &7{leaderboard_name}'
   add-page: false
   remove-page-items: true
   player-slots:
@@ -374,7 +374,7 @@ set-bounty:
   # same sort for leaderboard, but this sorts immunity
   sort-type: 3
   size: 54
-  gui-name: '&d&lSelect &9&lPlayer &7[{page}/{page_max}]'
+  gui-name: '&#33EEBB&lSelect &#3388BB&lPlayer &7[{page}/{page_max}]'
   add-page: false
   remove-page-items: true
   player-slots:
@@ -405,7 +405,7 @@ set-whitelist:
   # also sorts by immunity
   sort-type: 3
   size: 54
-  gui-name: '&d&lSelect &7&lWhitelisted &9&lPlayers'
+  gui-name: '&#33EEBB&lSelect &7&lWhitelisted &#3388BB&lPlayers'
   add-page: false
   remove-page-items: true
   player-slots:
@@ -439,7 +439,7 @@ set-whitelist:
 select-price:
   sort-type: 1
   size: 54
-  gui-name: '&d&lSelect &9&lBounty Value:&f'
+  gui-name: '&#33EEBB&lSelect &#3388BB&lBounty Value:&f'
   add-page: true
   remove-page-items: false
   player-slots:
@@ -483,7 +483,7 @@ select-price:
       slot: 31
 bounty-item-select:
   size: 54
-  gui-name: '&d&lSelect &9&lBounty Items &7[{page}/{page_max}]'
+  gui-name: '&#33EEBB&lSelect &#3388BB&lBounty Items &7[{page}/{page_max}]'
   add-page: false
   remove-page-items: true
   # the first player slot is where the player's head will go
@@ -596,7 +596,7 @@ confirm-bounty:
       slot: 41-43
 settings-gui:
   inventory-type: HOPPER
-  gui-name: '&9&lSettings'
+  gui-name: '&#3388BB&lSettings'
   layout:
     1:
       item: fill
@@ -629,7 +629,7 @@ challenges:
       slot: 18
 view-bounty:
   size: 54
-  gui-name: '&d&l{player}''s &9&lBounty: &2{amount}'
+  gui-name: '&#33EEBB&l{player}''s &#3388BB&lBounty: &2{amount}'
   remove-page-items: true
   add-page: false
   player-slots:
