@@ -160,12 +160,16 @@
             <name>Skript Repository</name>
             <url>https://repo.skriptlang.org/releases</url>
         </repository>
+        <repository>
+            <id>iridiumdevelopment</id>
+            <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
+        </repository>
     </repositories>
     <dependencies>
 
         <!-- https://github.com/Iridium-Development/IridiumColorAPI -->
         <dependency>
-            <groupId>com.github.Iridium-Development</groupId>
+            <groupId>com.iridium</groupId>
             <artifactId>IridiumColorAPI</artifactId>
             <version>1.0.6</version>
         </dependency>
